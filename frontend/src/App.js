@@ -1,25 +1,36 @@
-import logo from "./logo.svg";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { PrivateRoute } from "./routes/PrivateRoute/PrivateRoute";
+import { Home } from "./pages/Home/Home";
+import { SignIn } from "./pages/SignIn/SignIn";
+import { Profile } from "./pages/Profile/Profile";
+import { UserContextProvider } from "./contexts/UserContext/UserContext";
 import "./App.css";
 
-function App() {
-	return (
-		<div className="App">
-			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
-				<p>
-					Edit <code>src/App.js</code> and save to reload.
-				</p>
-				<a
-					className="App-link"
-					href="https://reactjs.org"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn React
-				</a>
-			</header>
-		</div>
-	);
-}
+const routes = [
+  { title: "profile", element: <PrivateRoute element={<Profile />} /> },
+  { title: "", element: <Home /> },
+  { title: "signin", element: <SignIn /> },
+];
 
-export default App;
+export const App = () => {
+  return (
+    <UserContextProvider>
+      <div className="App">
+        <Router>
+          <Routes>
+            {routes.map((page) => {
+              return (
+                <Route
+                  key={page.title}
+                  path={"/" + page.title}
+                  element={page.element}
+                />
+              );
+            })}
+          </Routes>
+        </Router>
+      </div>
+    </UserContextProvider>
+  );
+};
