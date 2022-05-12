@@ -61,8 +61,16 @@ Sequence Diagram
 Frontend Structure
 
 
-Overall System Diagram
+Overall System Diagram   
 
-## Dependencies
-Install Node Package Manager (npm). [Helpful Documentation](https://www.npmjs.com/get-npm)
+## Dependencies   
+Install Node Package Manager (npm). [Helpful Documentation](https://www.npmjs.com/get-npm)  
+### Backend
+- google-auth-library   
+
+### Frontend   
+- react-google-login
+- mui
+- motion
+- axios
 
