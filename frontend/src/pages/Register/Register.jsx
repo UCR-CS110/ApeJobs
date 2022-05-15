@@ -12,7 +12,10 @@ import {
 } from "@mui/material";
 import { majors } from "../../constants/majors";
 import { interestsList } from "../../constants/interests";
+import { ArrowBackUp } from "tabler-icons-react";
+import { Link } from "react-router-dom";
 import "./Register.css";
+
 const maxGPA = 4;
 
 export const Register = () => {
@@ -21,13 +24,25 @@ export const Register = () => {
   const [interests, setInterests] = React.useState([]);
   const [error, setError] = React.useState(false);
 
+  const sendSubmit = (form) => {
+    setError(true);
+  };
+
   return (
     <div className="registerContainer">
+      <Link
+        to="/signin"
+        onClick={() => {
+          window.location.reload(false);
+        }}
+      >
+        <ArrowBackUp height="30" width="30" />
+      </Link>
       <Typography variant="h2">Welcome.</Typography>
       <Typography variant="h6">
         To complete your profile, we need more information.
       </Typography>
-      <FormGroup sx={{ width: "40%", margin: "auto" }}>
+      <FormGroup sx={{ width: "40%", margin: "auto" }} error={error}>
         <InputLabel id="major-select" sx={{ marginTop: "5%" }}>
           Major
         </InputLabel>
@@ -50,6 +65,7 @@ export const Register = () => {
         <TextField
           required
           type="number"
+          label="GPA"
           InputProps={{
             inputMode: "numeric",
             inputProps: {
@@ -104,6 +120,8 @@ export const Register = () => {
         <Button
           variant="contained"
           sx={{ margin: "auto", marginTop: "5%", width: "10%" }}
+          type="submit"
+          onClick={sendSubmit}
         >
           Submit
         </Button>

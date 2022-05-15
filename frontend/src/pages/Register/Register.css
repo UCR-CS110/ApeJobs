@@ -12,3 +12,7 @@
     margin: auto;
     margin-top: 5%;
 }
+
+.registerContainer>a {
+    color: black;
+}
