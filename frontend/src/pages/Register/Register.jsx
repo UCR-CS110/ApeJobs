@@ -45,9 +45,9 @@ export const Register = () => {
         setUser({ id: res.data, major, gpa: GPA, interests });
         navigate("/", { replace: true });
       })
-      .catch(() =>
-        setError("Unable to complete your request. Please try again later.")
-      );
+      .catch(() => {
+        setError("Unable to complete your request. Please try again later.");
+      });
   };
 
   return (
@@ -55,7 +55,7 @@ export const Register = () => {
       <Link
         to="/signin"
         onClick={() => {
-          window.location.reload(false);
+          setUser({ email: "", name: null });
         }}
       >
         <ArrowBackUp height="30" width="30" />
