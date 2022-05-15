@@ -1,3 +1,7 @@
 .signinContainer {
-    padding: 10%;
+    margin-top: 10%;
+}
+
+.signinContainer>* {
+    margin-top: 2%;
 }

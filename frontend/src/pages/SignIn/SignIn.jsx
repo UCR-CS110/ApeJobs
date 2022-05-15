@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { Typography } from "@mui/material";
 import { GoogleLogin } from "react-google-login";
 import { UserContext } from "../../contexts/UserContext/UserContext";
 import { Navigate } from "react-router-dom";
@@ -35,6 +36,7 @@ export const SignIn = () => {
 
   return (
     <div className="signinContainer">
+      <Typography variant="h2">Sign in with Google.</Typography>
       <GoogleLogin
         clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
         buttonText="Log in with Google"
@@ -45,7 +47,7 @@ export const SignIn = () => {
         cookiePolicy={"single_host_origin"}
       />
       {error && <p>{error}</p>}
-      {email && <Navigate to="/profile" />}
+      {email && <Navigate to="/register" />}
     </div>
   );
 };

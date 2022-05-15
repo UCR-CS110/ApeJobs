@@ -27,3 +27,11 @@ server.post("/auth-google", async (req, res) => {
 
 
 module.exports = server;
+
+
+{   
+    posting: 
+        { professor_id: string
+        applications: [{application_id: blah, messages: []}]
+        }
+}
