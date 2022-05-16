@@ -1,11 +1,15 @@
 import React from "react";
 
 const defaultContext = {
+  id: null,
   email: null,
   name: null,
   picture: null,
   setUser: () => null,
   type: "student",
+  interests: [],
+  major: null,
+  gpa: null,
 };
 
 export const UserContext = React.createContext(defaultContext);

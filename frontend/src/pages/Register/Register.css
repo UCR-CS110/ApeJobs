@@ -1,0 +1,18 @@
+.registerContainer {
+    height: 100%;
+    margin-top: 10%;
+}
+
+.registerContainer>* {
+    margin-top: 2%;
+}
+
+.tagHolder {
+    max-width: 500px;
+    margin: auto;
+    margin-top: 5%;
+}
+
+.registerContainer>a {
+    color: black;
+}

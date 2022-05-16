@@ -73,4 +73,5 @@ Install Node Package Manager (npm). [Helpful Documentation](https://www.npmjs.co
 - mui
 - motion
 - axios
+- tabler icons
 

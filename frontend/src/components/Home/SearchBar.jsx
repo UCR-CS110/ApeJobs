@@ -1,12 +1,23 @@
+import React from "react";
 import { Autocomplete, TextField } from "@mui/material";
-import { interestsList } from "../../constants/interestsList";
+import { interestsList } from "../../constants/interests";
 
-export const SearchBar = (data) => {
+export const SearchBar = ({ onChange }) => (
   <Autocomplete
-    disablePortal
-    id="combo-box-demo"
-    options={interestsList}
-    sx={{ width: 300 }}
-    renderInput={(params) => <TextField {...params} label="Movie" />}
-  />;
-};
+    freeSolo
+    id="combo-box"
+    options={Object.keys(interestsList)}
+    sx={{ width: 300, margin: "auto" }}
+    onInputChange={(e, value) => onChange(value)}
+    renderInput={(params) => (
+      <TextField
+        {...params}
+        label="Search"
+        InputProps={{
+          ...params.InputProps,
+          type: "search",
+        }}
+      />
+    )}
+  />
+);

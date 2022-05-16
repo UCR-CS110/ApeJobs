@@ -5,6 +5,7 @@ import { StudentRoute } from "./routes/StudentRoute/StudentRoute";
 import { Home } from "./pages/Home/Home";
 import { SignIn } from "./pages/SignIn/SignIn";
 import { Profile } from "./pages/Profile/Profile";
+import { Register } from "./pages/Register/Register";
 import { UserContextProvider } from "./contexts/UserContext/UserContext";
 import "./App.css";
 
@@ -12,6 +13,7 @@ const routes = [
   { title: "profile", element: <PrivateRoute element={<Profile />} /> },
   { title: "", element: <StudentRoute element={<Home />} /> },
   { title: "signin", element: <SignIn /> },
+  { title: "register", element: <Register /> },
 ];
 
 export const App = () => {
