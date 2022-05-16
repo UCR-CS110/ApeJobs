@@ -41,7 +41,7 @@ export const Home = () => {
             id: 3,
             author: "Vagelis Hristidis",
             title: "Information Retrieval Researcher",
-            interests: [],
+            interests: ["Machine Learning"],
             majors: ["Computer Science"],
             people: 3,
             description:

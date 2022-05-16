@@ -14,6 +14,12 @@ export const JobCard = ({ job }) => {
         navigate(`/listing/${job.id}`);
       }}
     >
+      <Typography variant="h5" sx={{ textAlign: "left", fontWeight: "bold" }}>
+        {job.title}
+      </Typography>
+      <Typography variant="h6" sx={{ textAlign: "left", marginTop: "1em" }}>
+        {job.author}
+      </Typography>
       <div className="interestHolder">
         {job.interests.length > 0 &&
           job.interests.map((interest, index) => (
@@ -34,13 +40,6 @@ export const JobCard = ({ job }) => {
           </Typography>
         </>
       ))}
-      <Typography variant="h5" sx={{ textAlign: "left", fontWeight: "bold" }}>
-        {job.title}
-      </Typography>
-      <Typography variant="h6" sx={{ textAlign: "left", marginTop: "1em" }}>
-        {job.author}
-      </Typography>
-
       <Typography variant="body2" sx={{ textAlign: "left", marginTop: "1em" }}>
         {job?.description}
       </Typography>
