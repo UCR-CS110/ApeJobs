@@ -2,12 +2,13 @@ import React from "react";
 import axios from "axios";
 import { GoogleLogin } from "react-google-login";
 import { UserContext } from "../../contexts/UserContext/UserContext";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { backendUrl } from "../../constants/backendUrl";
 import "./Signin.css";
 
 export const SignIn = () => {
-  const { email, setUser } = React.useContext(UserContext);
+  const { type, setUser } = React.useContext(UserContext);
+  const navigate = useNavigate();
   const [error, setError] = React.useState();
 
   const handleLogin = (googleData) => {
@@ -26,6 +27,7 @@ export const SignIn = () => {
       .then((res) => {
         setUser(res.data.create);
         setError();
+        navigate(type === "student" ? "/" : "/profile", { replace: true });
       })
       .catch((err) => {
         console.log(err);
@@ -45,7 +47,6 @@ export const SignIn = () => {
         cookiePolicy={"single_host_origin"}
       />
       {error && <p>{error}</p>}
-      {email && <Navigate to="/profile" />}
     </div>
   );
 };

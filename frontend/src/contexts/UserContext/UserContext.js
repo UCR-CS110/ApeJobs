@@ -5,6 +5,7 @@ const defaultContext = {
   name: null,
   picture: null,
   setUser: () => null,
+  type: "student",
 };
 
 export const UserContext = React.createContext(defaultContext);
@@ -14,5 +15,7 @@ export const UserContextProvider = (props) => {
     setState({ ...state, ...user });
   };
   const [state, setState] = React.useState({ ...defaultContext, setUser });
-  return <UserContext.Provider value={state}>{props.children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={state}>{props.children}</UserContext.Provider>
+  );
 };
