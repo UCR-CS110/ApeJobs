@@ -1,6 +1,6 @@
 import React from "react";
 import { Autocomplete, TextField } from "@mui/material";
-import { interestsList } from "../../constants/interests";
+import { interestsList } from "../../../constants/interests";
 
 export const SearchBar = ({ onChange }) => (
   <Autocomplete

@@ -1,13 +1,14 @@
 import axios from "axios";
 import React from "react";
-import { SearchBar } from "../../components/Home/SearchBar";
+import { JobCard } from "../../components/Home/JobCard/JobCard";
+import { SearchBar } from "../../components/Home/SearchBar/SearchBar";
 import { backendUrl } from "../../constants/backendUrl";
 
 //replace job map with job card component
 //remove default jobs when backend is completed
 export const Home = () => {
   const [jobs, setJobs] = React.useState([]);
-  const [results, setResults] = React.useState([]);
+  const [results, setResults] = React.useState();
 
   React.useEffect(() => {
     axios
@@ -18,19 +19,33 @@ export const Home = () => {
       .catch((e) => {
         setJobs([
           {
+            id: 1,
             author: "Mariam Salloum",
             title: "CS178 Grader",
-            interests: ["Web Development"],
+            interests: ["Web Development", "Embedded Systems", "Big Data"],
+            majors: ["Computer Science"],
+            description:
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            people: 1,
           },
           {
+            id: 2,
             author: "Phillip Brisk",
             title: "CS120B Grader",
-            interests: [""],
+            interests: [],
+            majors: ["Computer Science", "Electrical Engineering"],
+            description: "",
+            people: 2,
           },
           {
+            id: 3,
             author: "Vagelis Hristidis",
             title: "Information Retrieval Researcher",
-            interests: [""],
+            interests: [],
+            majors: ["Computer Science"],
+            people: 3,
+            description:
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
           },
         ]);
       });
@@ -45,36 +60,21 @@ export const Home = () => {
           setResults(
             jobs.filter((job) => {
               e = e.toLowerCase();
-              console.log(e);
-              console.log(job.interests);
               return (
                 job.title.toLowerCase().includes(e) ||
                 job.interests
                   .map((interest) => interest.toLowerCase())
                   .includes(e) ||
-                job.author.toLowerCase().includes(e)
+                job.author.toLowerCase().includes(e) ||
+                job.description.toLowerCase().includes(e)
               );
             })
           );
         }}
       />
       {results
-        ? results.map((job) => (
-            <>
-              <p>{job.title}</p>
-              <p>{job.author}</p>
-              <p>{job.interests}</p>
-              <hr width="25%" />
-            </>
-          ))
-        : jobs.map((job) => (
-            <>
-              <p>{job.title}</p>
-              <p>{job.author}</p>
-              <p>{job.interests}</p>
-              <hr width="25%" />
-            </>
-          ))}
+        ? results.map((job) => <JobCard job={job} />)
+        : jobs.map((job) => <JobCard job={job} />)}
     </div>
   );
 };
