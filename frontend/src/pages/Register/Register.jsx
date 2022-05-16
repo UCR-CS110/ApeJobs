@@ -24,7 +24,7 @@ export const Register = () => {
           setUser({ email: "", name: null });
         }}
       >
-        <ArrowBackUp height="30" width="30" />
+        <ArrowBackUp height="30" width="30" />{" "}
       </Link>
       <Typography variant="h2">Welcome.</Typography>
       <Typography variant="h6">
@@ -32,6 +32,9 @@ export const Register = () => {
       </Typography>
       {type.length < 1 ? (
         <FormControl sx={{ width: "40%", margin: "auto" }}>
+          <Typography variant="body1" sx={{ float: "left", marginTop: "2%" }}>
+            I am a...
+          </Typography>
           <RadioGroup
             aria-labelledby="controlled-radio-buttons-group"
             name="controlled-radio-buttons-group"
