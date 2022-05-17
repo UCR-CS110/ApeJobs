@@ -6,6 +6,7 @@ import { Home } from "./pages/Home/Home";
 import { SignIn } from "./pages/SignIn/SignIn";
 import { Profile } from "./pages/Profile/Profile";
 import { Register } from "./pages/Register/Register";
+import { Application } from "./pages/Application/Application";
 import { UserContextProvider } from "./contexts/UserContext/UserContext";
 import "./App.css";
 
@@ -14,6 +15,7 @@ const routes = [
   { title: "", element: <StudentRoute element={<Home />} /> },
   { title: "signin", element: <SignIn /> },
   { title: "register", element: <Register /> },
+  { title: "application", element: <Application /> },
 ];
 
 export const App = () => {
