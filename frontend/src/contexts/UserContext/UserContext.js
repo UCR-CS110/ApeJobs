@@ -6,6 +6,7 @@ const defaultContext = {
   name: null,
   picture: null,
   setUser: () => null,
+  type: "student",
   interests: [],
   major: null,
   gpa: null,

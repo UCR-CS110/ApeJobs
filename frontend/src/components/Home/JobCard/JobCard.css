@@ -1,0 +1,22 @@
+.interestHolder {
+    width: 10%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 0.5em;
+    margin-right: 0;
+    margin-left: auto;
+    margin-bottom: 1em;
+}
+
+.hover:hover {
+    transform: scale(1.01);
+}
+
+.iconRight {
+    display: flex;
+    gap: 0.5em;
+    align-items: flex-end;
+    float: right;
+}
