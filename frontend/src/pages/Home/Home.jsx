@@ -2,6 +2,7 @@ import axios from "axios";
 import React from "react";
 import { JobCard } from "../../components/Home/JobCard/JobCard";
 import { SearchBar } from "../../components/Home/SearchBar/SearchBar";
+import { NavBar } from "../../components/NavBar/NavBar";
 import { backendUrl } from "../../constants/backendUrl";
 
 //replace job map with job card component
@@ -53,6 +54,7 @@ export const Home = () => {
 
   return (
     <div className="homeContainer">
+		  <NavBar/>
       <h1>Home</h1>
       <SearchBar
         onChange={(e) => {
