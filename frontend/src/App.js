@@ -15,7 +15,7 @@ const routes = [
   { title: "", element: <StudentRoute element={<Home />} /> },
   { title: "signin", element: <SignIn /> },
   { title: "register", element: <Register /> },
-  { title: "application", element: <Application /> },
+  { title: "/listing/:id/apply", element: <Application /> },
 ];
 
 export const App = () => {

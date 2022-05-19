@@ -1,42 +1,67 @@
-import { Card, Typography, Chip, CardContent, Box, CardActions, Button} from "@mui/material";
+import {
+	Card,
+	Typography,
+	Chip,
+	CardContent,
+	Box,
+	CardActions,
+	Button,
+} from "@mui/material";
 import { interestsList } from "../../../constants/interests";
 import { Users } from "tabler-icons-react";
 import { useNavigate } from "react-router-dom";
-const bull = (
-	<Box
-		component="span"
-		sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
-	>
-		•
-	</Box>
-);
+
 export const JobInfo = ({ job }) => {
 	const navigate = useNavigate();
 	return (
-		<Card sx={{ maxWidth: 275 }}>
+		<Card sx={{ boxShadow: 6 }}>
 			<CardContent>
 				<Typography
-					sx={{ fontSize: 14 }}
-					color="text.secondary"
-					gutterBottom
+					variant="h5"
+					sx={{ textAlign: "left", fontWeight: "bold" }}
 				>
-					Word of the Day
+					{job.title}
 				</Typography>
-				<Typography variant="h5" component="div">
-					be{bull}nev{bull}o{bull}lent
+				<Typography
+					variant="h6"
+					sx={{ textAlign: "left", marginTop: "1em" }}
+				>
+					{job.author}
 				</Typography>
-				<Typography sx={{ mb: 1.5 }} color="text.secondary">
-					adjective
+				{job?.majors.map((major) => (
+					<>
+						<Typography
+							variant="body1"
+							sx={{ textAlign: "right", fontWeight: "bold" }}
+						>
+							{major}
+						</Typography>
+					</>
+				))}
+				<Typography
+					variant="body2"
+					sx={{
+						textAlign: "left",
+						marginTop: "1em",
+						marginBottom: "1em",
+					}}
+				>
+					{job?.description}
 				</Typography>
-				<Typography variant="body2">
-					well meaning and kindly.
-					<br />
-					{'"a benevolent smile"'}
+				{job?.skills.map((skill) => (
+					<>
+						<Typography variant="body2" sx={{ textAlign: "left" }}>
+							{skill}
+						</Typography>
+					</>
+				))}
+				<Typography
+					variant="body2"
+					sx={{ textAlign: "left", marginTop: "1em" }}
+				>
+					{job?.pay}
 				</Typography>
 			</CardContent>
-			<CardActions>
-				<Button size="small">Learn More</Button>
-			</CardActions>
 		</Card>
 	);
 };
