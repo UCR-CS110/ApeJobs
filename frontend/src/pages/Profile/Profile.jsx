@@ -16,33 +16,33 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const statusList = {
-  "pending": "warning",
-  "denied": "error",
-  "accepted": "success",
+  "Pending": "warning",
+  "Denied": "error",
+  "Accepted": "success",
 }
 
 const jobsApplied = [
   {
     title: "CS178 Grader",
     date: "05/19/2022",
-    status: "pending"
+    status: "Pending"
   },
   {
     title: "Researcher",
     date: "05/19/2022",
-    status: "accepted"
+    status: "Accepted"
   },
   {
     title: "CS120B Grader",
     date: "05/19/2022",
-    status: "denied"
+    status: "Denied"
   }
 ];
 
+
+
 const ProfilePicInfo = () => {
-  const { name } = React.useContext(UserContext);
-  const { major } = React.useContext(UserContext);
-  const { gpa } = React.useContext(UserContext);
+  const { name, major, gpa} = React.useContext(UserContext);
 
   return(
     <>
@@ -60,17 +60,17 @@ const ProfilePicInfo = () => {
 };
 
 const Interests = () => {
-  const { interests } = React.useContext(UserContext);
+  const { interests, about } = React.useContext(UserContext);
   return (
     <>
-      <Item>
+      <Item sx={{marginTop: "1em", marginBottom:"1em"}}>
         <Box>
           <Typography inline variant="body1" align="left">
             <Box  sx={{ fontWeight: 'bold' }}>Interests:</Box>
           </Typography>
           <Box mt={2} sx={{flexGrow: 1 }}>
             <Grid container direction="row">
-              {interests.map((interest) => <Grid item xs={4}> <Chip label={interest} color={interestsList[interest]}/></Grid>)}
+              {interests.map((interest, index) => <Grid item xs={4}> <Chip label={interest} key={index} color={interestsList[interest]}/></Grid>)}
             </Grid>
           </Box>
           <Box mt={4}>
@@ -85,7 +85,7 @@ const Interests = () => {
                 mt: 2
               }}
               >
-             <Typography inline variant="body1" align="left">....Info</Typography>
+             <Typography inline variant="body1" align="left">{about}</Typography>
            </Box>
           </Box>
         </Box>
@@ -98,7 +98,7 @@ const ApplicationCard = ({job}) => {
   return(
     <>
       <Box sx={{flexGrow: 1 }}>
-       <Item sx={{marginTop: "1em"}}>
+       <Item sx={{marginTop: "2em"}} >
         <Grid container direction="row">
             <Grid item xs={5}>
               <Typography sx={{textAlign: "left",fontWeight: "bold"}}>
@@ -111,7 +111,7 @@ const ApplicationCard = ({job}) => {
               </Typography>
               </Grid>
               <Grid sx={{textAlign: "right"}} item xs={5}>
-                  <Chip label={job.status.toUpperCase()} color={statusList[job.status]}/>
+                  <Chip label={job.status} color={statusList[job.status]}/>
               </Grid>
           </Grid>
           </Item>
@@ -123,14 +123,14 @@ const ApplicationCard = ({job}) => {
 const Applications = () => {
   return (
     <>
-      <Item>
+      <Item sx={{marginLeft: "1em", marginRight:"1em"}}>
         <Typography inline variant="body1" align="left">
             <Box  sx={{ fontWeight: 'bold' }}>Applications</Box>
           </Typography>
           <Box mt={2} sx={{flexGrow: 1 }}>
             <Grid container direction="column">
-              {jobsApplied.map((job) =>
-                <ApplicationCard job={job}/>  
+              {jobsApplied.map((job, index) =>
+                <ApplicationCard key={index} job={job}/>  
               )}
             </Grid>
           </Box>

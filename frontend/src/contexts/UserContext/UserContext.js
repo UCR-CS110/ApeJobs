@@ -13,6 +13,7 @@ const defaultContext = {
   ],
   major: "Finesser",
   gpa: "1.0",
+  about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
 };
 
 export const UserContext = React.createContext(defaultContext);
