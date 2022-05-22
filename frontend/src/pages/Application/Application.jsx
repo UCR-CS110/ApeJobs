@@ -21,7 +21,7 @@ export const Application = () => {
 				sx={{ marginTop: "1rem" }}
 			>
 				<Grid item xs={5} sx={{ mx: 5 }}>
-					<ApplicantForm />
+					<ApplicantForm job={location.state}/>
 				</Grid>
 				<Grid item xs={5} sx={{ mx: 5 }}>
 					{location.state && <JobInfo job={location.state} />}

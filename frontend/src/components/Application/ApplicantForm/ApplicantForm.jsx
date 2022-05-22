@@ -47,21 +47,12 @@ const mockContext = {
 	gpa: "4.0",
 };
 
-const mockOptionalFields = {
-	questions: [
-		"How much experience do you have?",
-		"Where are the UCR donkeys?",
-		"Do you love Elena?",
-		"If you have taken CS111, was it easy?",
-	],
-};
-
-export const ApplicantForm = () => {
+export const ApplicantForm = ({ job }) => {
 	// const { name, email, major, gpa } = useContext(UserContext);
 	const { name, email, major, gpa } = mockContext;
-	const [questions, setQuestions] = useState(mockOptionalFields.questions);
+	const [questions, setQuestions] = useState(job.questions);
 	const [formPage, setFormPage] = useState(0);
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 	return (
 		<ThemeProvider theme={theme}>
 			<Card sx={{ boxShadow: 6 }}>
@@ -105,35 +96,53 @@ export const ApplicantForm = () => {
 						</Box>
 					</>
 				)}
-				<Box
-					//margin
-					display="flex"
-					justifyContent="flex-end"
-					alignItems="flex-end"
-				>
-					<Button size="small"
-						onClick={(e) => {
-							if (formPage > 0) setFormPage(formPage - 1);
-						}}
+				{questions.length === 0 && (
+					<Box
+						m={2}
+						//margin
+						display="flex"
+						justifyContent="flex-end"
+						alignItems="flex-end"
 					>
-						<ArrowNarrowLeft
-							size={40}
-							strokeWidth={2}
-							color={"#4067bf"}
-						/>
-					</Button>
-					<Button size="small"
-						onClick={(e) => {
-							if (formPage < 1) setFormPage(formPage + 1);
-						}}
-					>
-						<ArrowNarrowRight
-							size={40}
-							strokeWidth={2}
-							color={"#4067bf"}
-						/>
-					</Button>
-				</Box>
+						<Button variant="contained">Apply</Button>
+					</Box>
+				)}
+				{questions.length > 0 && (
+					<>
+						<Box
+							//margin
+							display="flex"
+							justifyContent="flex-end"
+							alignItems="flex-end"
+						>
+							<Button
+								size="small"
+								onClick={(e) => {
+									if (formPage > 0) setFormPage(formPage - 1);
+								}}
+							>
+								<ArrowNarrowLeft
+									size={40}
+									strokeWidth={2}
+									color={"#4067bf"}
+								/>
+							</Button>
+							<Button
+								size="small"
+								onClick={(e) => {
+									if (questions.length > 0 && formPage < 1)
+										setFormPage(formPage + 1);
+								}}
+							>
+								<ArrowNarrowRight
+									size={40}
+									strokeWidth={2}
+									color={"#4067bf"}
+								/>
+							</Button>
+						</Box>
+					</>
+				)}
 			</Card>
 		</ThemeProvider>
 	);

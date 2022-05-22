@@ -8,7 +8,6 @@ import {
 	Button,
 } from "@mui/material";
 import { interestsList } from "../../../constants/interests";
-import { Users } from "tabler-icons-react";
 import { useNavigate } from "react-router-dom";
 
 export const JobInfo = ({ job }) => {
