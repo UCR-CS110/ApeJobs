@@ -11,7 +11,7 @@ export const JobCard = ({ job }) => {
       className="hover"
       sx={{ margin: "auto", marginTop: "2em", width: "60%", padding: "1%" }}
       onClick={() => {
-        navigate(`/listing/${job.id}`);
+        navigate(`/listing/${job._id}`);
       }}
     >
       <Typography variant="h5" sx={{ textAlign: "left", fontWeight: "bold" }}>
