@@ -12,7 +12,7 @@ export const JobCard = ({ job }) => {
       sx={{ margin: "auto", marginTop: "2em", width: "60%", padding: "1%" }}
       onClick={() => {
         // passing state into the next page
-        navigate(`/listing/${job.id}/apply`, {state: job});
+        navigate(`/listing/${job._id}/apply`, {state: job});
       }}
     >
       <Typography variant="h5" sx={{ textAlign: "left", fontWeight: "bold" }}>
