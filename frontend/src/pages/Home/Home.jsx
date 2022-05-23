@@ -2,8 +2,8 @@ import axios from "axios";
 import React from "react";
 import { JobCard } from "../../components/Home/JobCard/JobCard";
 import { SearchBar } from "../../components/Home/SearchBar/SearchBar";
-import { NavBar } from "../../components/NavBar/NavBar";
 import { backendUrl } from "../../constants/backendUrl";
+import { Box } from "@mui/material";
 
 //replace job map with job card component
 //remove default jobs when backend is completed
@@ -18,13 +18,12 @@ export const Home = () => {
         setJobs(res.data);
       })
       .catch((e) => {
-        console.log(e); 
+        console.log(e);
       });
   }, []);
 
   return (
     <div className="homeContainer">
-		  <NavBar/>
       <h1>Home</h1>
       <SearchBar
         onChange={(e) => {
@@ -44,9 +43,11 @@ export const Home = () => {
           );
         }}
       />
-      {results
-        ? results.map((job) => <JobCard job={job} />)
-        : jobs.map((job) => <JobCard job={job} />)}
+      <Box sx={{ paddingY: "2em" }}>
+        {results
+          ? results.map((job) => <JobCard job={job} />)
+          : jobs.map((job) => <JobCard job={job} />)}
+      </Box>
     </div>
   );
 };

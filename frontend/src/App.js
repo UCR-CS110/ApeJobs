@@ -7,6 +7,7 @@ import { SignIn } from "./pages/SignIn/SignIn";
 import { Profile } from "./pages/Profile/Profile";
 import { Register } from "./pages/Register/Register";
 import { UserContextProvider } from "./contexts/UserContext/UserContext";
+import { NavBar } from "./components/NavBar/NavBar";
 import "./App.css";
 
 const routes = [
@@ -21,6 +22,7 @@ export const App = () => {
     <UserContextProvider>
       <div className="App">
         <Router>
+          <NavBar />
           <Routes>
             {routes.map((page) => {
               return (

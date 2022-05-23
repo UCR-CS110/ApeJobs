@@ -1,16 +1,18 @@
 import React from "react";
-import { AppBar, Typography, Box, Toolbar, Button } from "@mui/material";
+import { AppBar, Avatar, Typography, Box, Toolbar, Button } from "@mui/material";
 import { User } from "tabler-icons-react";
 import { Link } from "react-router-dom";
 import "./NavBar.css";
+import { UserContext } from "../../contexts/UserContext/UserContext";
 
 // Put either in appjs so all pages have it or on every page that needs it
 export const NavBar = () => {
+	const { picture } = React.useContext(UserContext);
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar
 				className="navbar"
-				position="static"
+				position="fixed"
 				sx={{ bgcolor: "white" }}
 			>
 				<Toolbar>
@@ -26,7 +28,7 @@ export const NavBar = () => {
 							fontSize: "35px",
 							fontFamily: "Inter",
 							fontWeight: "1000",
-              textDecoration: 'none'
+							textDecoration: 'none'
 						}}
 					>
 						ApeJobs
@@ -38,7 +40,7 @@ export const NavBar = () => {
 						sx={{ flexGrow: 1 }}
 					></Typography>
 					<Button component={Link} to="/profile" color="inherit">
-						<User size={35} strokeWidth={1.5} color={"black"} />
+						{!picture ? <User size={35} strokeWidth={1.5} color={"black"} /> : <Avatar alt="pfp" src={picture} />}
 					</Button>
 				</Toolbar>
 			</AppBar>

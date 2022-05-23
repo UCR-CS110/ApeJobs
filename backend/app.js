@@ -3,8 +3,8 @@ var cors = require("cors");
 const dotenv = require('dotenv').config();
 const app = express();
 const connectDB = require("./config/db");
-const userManagement = require("./routes/user-management.js");
-const jobsRoutes = require("./routes/jobsRoutes.js");
+const userManagement = require("./routes/userManagement.js");
+const jobsRoutes = require("./routes/job-routes.js");
 
 connectDB(); 
 
