@@ -50,7 +50,7 @@ const mockContext = {
 export const ApplicantForm = ({ job }) => {
 	// const { name, email, major, gpa } = useContext(UserContext);
 	const { name, email, major, gpa } = mockContext;
-	const [questions, setQuestions] = useState(job.questions);
+	const { questions } = job;
 	const [formPage, setFormPage] = useState(0);
 	// const navigate = useNavigate();
 	return (
@@ -64,7 +64,7 @@ export const ApplicantForm = ({ job }) => {
 						Apply w/ ApeJobs Info
 					</Typography>
 				</Box>
-				{formPage === 0 && (
+				{formPage === 0 ? (
 					<Box mt={3} ml={5} pt={1}>
 						<Grid container spacing={2} direction="column">
 							<Grid align="left" item xs={6}>
@@ -81,8 +81,7 @@ export const ApplicantForm = ({ job }) => {
 							</Grid>
 						</Grid>
 					</Box>
-				)}
-				{formPage === 1 && (
+				) : (
 					<>
 						<OptionalForm questions={questions} />
 						<Box
@@ -96,7 +95,7 @@ export const ApplicantForm = ({ job }) => {
 						</Box>
 					</>
 				)}
-				{questions.length === 0 && (
+				{questions.length === 0 ? (
 					<Box
 						m={2}
 						//margin
@@ -106,8 +105,7 @@ export const ApplicantForm = ({ job }) => {
 					>
 						<Button variant="contained">Apply</Button>
 					</Box>
-				)}
-				{questions.length > 0 && (
+				) : (
 					<>
 						<Box
 							//margin
