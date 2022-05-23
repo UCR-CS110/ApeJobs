@@ -4,7 +4,7 @@ const dotenv = require('dotenv').config();
 const app = express();
 const connectDB = require("./config/db");
 const userManagement = require("./routes/userManagement.js");
-const jobsRoutes = require("./routes/job-routes.js");
+const jobsRoutes = require("./routes/jobsRoutes.js");
 
 connectDB(); 
 
