@@ -5,13 +5,13 @@ const jobSchema = new Schema(
 	{
 		author: String,
 		title: String,
-		interests: Array,
-		majors: Array,
+		interests: [String],
+		majors: [String],
 		description: String,
 		people: Number,
-		skills: Array, 
+		skills: [String], 
 		pay: String,
-		questions: Array,
+		questions: [String],
 	},
 	{ timestamps: true }
 );

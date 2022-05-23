@@ -7,7 +7,7 @@ const userSchema = new Schema(
 		name: String,
 		picture: String,
 		type: String,
-		interests: Array,
+		interests: [String],
 		major: String,
 		gpa: String,
 	},
