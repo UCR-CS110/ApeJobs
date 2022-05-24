@@ -27,9 +27,12 @@ export const SignIn = () => {
         }
       )
       .then((res) => {
-        setUser(res.data.create);
+        let url = "/";
+        setUser(res.data);
         setError();
-        navigate("/register", { replace: true });
+        if (!res.data._id) url = "/register";
+        console.log(url);
+        navigate(url, { replace: true });
       })
       .catch((err) => {
         console.log(err);
