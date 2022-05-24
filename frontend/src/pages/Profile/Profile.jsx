@@ -58,7 +58,7 @@ const ProfilePicInfo = () => {
 };
 
 const Interests = () => {
-  const { interests, about } = React.useContext(UserContext);
+  const { interests } = React.useContext(UserContext);
   return (
     <>
       <Item sx={{marginY:"1em" }}>
@@ -83,7 +83,7 @@ const Interests = () => {
                 mt: 2
               }}
               >
-             <Typography inline variant="body1" align="left">{about}</Typography>
+             <Typography inline variant="body1" align="left">...info about tmp</Typography>
            </Box>
           </Box>
         </Box>
@@ -142,9 +142,11 @@ const Applications = () => {
 
 
 export const Profile = () => {
+  const { name, setUser } = React.useContext(UserContext);
   return (
     <>
       <h1>Profile</h1>
+      <Button variant="contained" onClick={() => setUser({})}>Sign Out</Button>
       <Box ml={2} mr={2} sx={{flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={4}>
