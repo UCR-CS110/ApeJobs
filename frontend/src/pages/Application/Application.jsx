@@ -1,6 +1,5 @@
 import React from "react";
 import { JobInfo } from "../../components/Application/JobInfo/JobInfo";
-import { NavBar } from "../../components/NavBar/NavBar";
 import { ApplicantForm } from "../../components/Application/ApplicantForm/ApplicantForm";
 import { useLocation } from "react-router-dom";
 import { Grid } from "@mui/material";
@@ -13,7 +12,6 @@ export const Application = () => {
 
 	return (
 		<>
-			<NavBar />
 			<Grid
 				container
 				spacing={2}

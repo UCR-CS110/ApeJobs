@@ -9,10 +9,9 @@ import { UserContext } from "../../contexts/UserContext/UserContext";
 export const NavBar = () => {
 	const { picture } = React.useContext(UserContext);
 	return (
-		<Box sx={{ flexGrow: 1 }}>
 			<AppBar
 				className="navbar"
-				position="fixed"
+				position="sticky"
 				sx={{ bgcolor: "white" }}
 			>
 				<Toolbar>
@@ -44,6 +43,5 @@ export const NavBar = () => {
 					</Button>
 				</Toolbar>
 			</AppBar>
-		</Box>
 	);
 };
