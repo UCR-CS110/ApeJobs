@@ -59,7 +59,7 @@ export const Register = () => {
           </RadioGroup>
         </FormControl>
       ) : (
-        <Form type={type} email={email} name={name} picture={picture} />
+        <Form type={type} email={email} name={name} picture={picture} setUser={setUser}/>
       )}
     </div>
   );
