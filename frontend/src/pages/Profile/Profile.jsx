@@ -3,8 +3,6 @@ import { UserContext } from "../../contexts/UserContext/UserContext";
 import { styled } from '@mui/material/styles';
 import {Avatar, Box, Paper, Grid, Chip ,Button, Typography} from '@mui/material'
 import { interestsList } from "../../constants/interests";
-import { NavBar } from "../../components/NavBar/NavBar";
-import "./Profile.css"
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -63,7 +61,7 @@ const Interests = () => {
   const { interests, about } = React.useContext(UserContext);
   return (
     <>
-      <Item sx={{marginTop: "1em", marginBottom:"1em"}}>
+      <Item sx={{marginY:"1em" }}>
         <Box>
           <Typography inline variant="body1" align="left">
             <Box  sx={{ fontWeight: 'bold' }}>Interests:</Box>
@@ -123,7 +121,7 @@ const ApplicationCard = ({job}) => {
 const Applications = () => {
   return (
     <>
-      <Item sx={{marginLeft: "1em", marginRight:"1em"}}>
+      <Item sx={{marginX:"1em"}}>
         <Typography inline variant="body1" align="left">
             <Box  sx={{ fontWeight: 'bold' }}>Applications</Box>
           </Typography>
@@ -146,7 +144,6 @@ const Applications = () => {
 export const Profile = () => {
   return (
     <>
-		  <NavBar/>
       <h1>Profile</h1>
       <Box ml={2} mr={2} sx={{flexGrow: 1 }}>
       <Grid container spacing={2}>
