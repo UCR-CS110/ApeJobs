@@ -7,14 +7,19 @@ import {
   Radio,
 } from "@mui/material";
 import { ArrowBackUp } from "tabler-icons-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext/UserContext";
 import "./Register.css";
 import { Form } from "../../components/Register/Form";
 
 export const Register = () => {
   const { email, name, picture, setUser } = React.useContext(UserContext);
+  const navigate = useNavigate();
   const [type, setType] = React.useState("");
+
+  React.useEffect(() => {
+    if (!email) navigate("/signin", { replace: true })
+  }, [email, navigate])
 
   return (
     <div className="registerContainer">
