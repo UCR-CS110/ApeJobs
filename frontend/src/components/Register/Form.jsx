@@ -54,7 +54,8 @@ export const Form = ({ type, email, name, picture, setUser }) => {
         setUser(res.data);
         navigate("/", { replace: true });
       })
-      .catch(() => {
+      .catch((e) => {
+        console.log(e);
         setError("Unable to complete your request. Please try again later.");
       });
   };

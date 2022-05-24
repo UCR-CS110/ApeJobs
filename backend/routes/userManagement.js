@@ -27,10 +27,10 @@ server.post("/auth-google", async (req, res) => {
 server.post("/register", async (req, res) => {
   const user = req.body;
   User.findOne({ email: user.email }, (err, usr) => {
-    if (!err) return res.json(usr);
+    if (!err && usr) return res.json(usr);
     User.create(user,
       (err, usr) => {
-        if (err) return res.error("Error registering.");
+        if (err) return res.send("Error registering.");
         res.json(usr);
       })
   });
