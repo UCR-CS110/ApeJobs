@@ -1,7 +1,12 @@
 var express = require("express");
 var cors = require("cors");
-var app = express();
-const userManagement = require("./routes/user-management.js");
+const dotenv = require('dotenv').config();
+const app = express();
+const connectDB = require("./config/db");
+const userManagement = require("./routes/userManagement.js");
+const jobsRoutes = require("./routes/jobsRoutes.js");
+
+connectDB(); 
 
 app.use(
   cors({
@@ -15,6 +20,7 @@ app.get("/products/:id", function (req, res, next) {
 });
 
 app.use("/api/user-management", userManagement);
+app.use("/api/jobs", jobsRoutes);
 
 app.listen(80, function () {
   console.log("CORS-enabled web server listening on port 80");

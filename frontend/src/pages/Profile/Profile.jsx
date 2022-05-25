@@ -139,8 +139,6 @@ const Applications = () => {
 
 
 
-
-
 export const Profile = () => {
   const { name, setUser } = React.useContext(UserContext);
   return (

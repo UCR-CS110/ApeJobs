@@ -47,12 +47,15 @@ export const Form = ({ type, email, name, picture, setUser }) => {
             type,
           };
     axios
-      .post(`${backendUrl}/register`, user)
+      .post(`${backendUrl}/api/user-management/register`, user)
       .then((res) => {
-        setUser({ id: res.data, major, gpa: GPA, interests });
+        setError();
+        console.log(res.data);
+        setUser(res.data);
         navigate("/", { replace: true });
       })
-      .catch(() => {
+      .catch((e) => {
+        console.log(e);
         setError("Unable to complete your request. Please try again later.");
       });
   };
