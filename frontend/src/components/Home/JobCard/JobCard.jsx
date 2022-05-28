@@ -19,7 +19,7 @@ export const JobCard = ({ job }) => {
         {job.title}
       </Typography>
       <Typography variant="h6" sx={{ textAlign: "left", marginTop: "1em" }}>
-        {job.author}
+        {job.author.name ? job.author.name : job.author}
       </Typography>
       <div className="interestHolder">
         {job.interests.length > 0 &&

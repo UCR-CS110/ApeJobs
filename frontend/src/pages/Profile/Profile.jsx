@@ -69,7 +69,7 @@ const Interests = ({ interests, about }) => {
           </Typography>
           <Box mt={2} sx={{ flexGrow: 1 }}>
             <Grid container direction="row">
-              {interests.map((interest, index) => <Grid item xs={4}> <Chip label={interest} key={index} color={interestsList[interest]} /></Grid>)}
+              {interests.length < 1 ? <p>No interests found.</p> : interests.map((interest, index) => <Grid item xs={4}> <Chip label={interest} key={index} color={interestsList[interest]} /></Grid>)}
             </Grid>
           </Box>
           <Box mt={4}>
@@ -84,7 +84,7 @@ const Interests = ({ interests, about }) => {
                 mt: 2
               }}
             >
-              <Typography inline variant="body1" align="left">{about}</Typography>
+              <Typography inline variant="body1" align="left">{about.length > 1 ? about : "No about found."}</Typography>
             </Box>
           </Box>
         </Box>
@@ -148,7 +148,7 @@ const Listings = ({ type, jobs }) => {
         </Typography>
         <Box mt={2} sx={{ flexGrow: 1 }}>
           <Grid container direction="column">
-            {jobs.length < 1 ? <p>No jobs found.</p> : jobs.map((job, index) =>
+            {jobs.length < 1 ? <p>No jobs found.</p> : jobs.sort((a, b) => b.createdAt- a.createdAt).map((job, index) =>
               <ListingCard key={index} job={job} />
             )}
           </Grid>
