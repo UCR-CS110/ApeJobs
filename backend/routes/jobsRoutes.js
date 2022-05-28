@@ -42,7 +42,7 @@ router.delete("/:id", (req, res) => {
 router.get(
 	"/:id",
 	((req, res) => {
-		Job.find({ "author._id": req.params.id }, (err, jobs) => {
+		Job.find({ "author.user_id": req.params.id }, (err, jobs) => {
 			if (err) res.status(400).send("No jobs found for author.");
 			return res.json(jobs);
 		});
