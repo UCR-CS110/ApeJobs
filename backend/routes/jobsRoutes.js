@@ -17,7 +17,7 @@ router.post(
 	"/",
 	asyncHandler(async (req, res) => {
 		const jobs = await Job.create({
-			author: req.body.author,
+			author: { _id: req.body.id, name: req.body.name },
 			title: req.body.title,
 			interests: req.body.interests,
 			majors: req.body.majors,
@@ -38,5 +38,15 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
 	res.status(200).json({ message: `delete job ${req.params.id}` });
 });
+
+router.get(
+	"/:id",
+	((req, res) => {
+		Job.find({ "author._id": req.params.id }, (err, jobs) => {
+			if (err) res.status(400).send("No jobs found for author.");
+			return res.json(jobs);
+		});
+	})
+);
 
 module.exports = router;

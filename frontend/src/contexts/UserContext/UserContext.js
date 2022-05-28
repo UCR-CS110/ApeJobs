@@ -8,8 +8,10 @@ const defaultContext = {
   setUser: () => null,
   type: "student",
   interests: [],
+  department: null,
   major: null,
   gpa: null,
+  about: null,
 };
 
 export const UserContext = React.createContext(defaultContext);

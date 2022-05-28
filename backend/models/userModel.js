@@ -10,6 +10,8 @@ const userSchema = new Schema(
 		interests: [String],
 		major: String,
 		gpa: String,
+		department: String,
+		about: String
 	},
 	{ timestamps: true }
 );
