@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const jobSchema = new Schema(
 	{
-		author: { _id: mongoose.Types.ObjectId, name: String },
+		author: { user_id: mongoose.Types.ObjectId, name: String },
 		title: String,
 		interests: [String],
 		majors: [String],
