@@ -6,10 +6,13 @@ const getJobs = asyncHandler(async (req, res) => {
 	res.status(200).json(jobs);
 });
 
-const getJob = 	asyncHandler(async (req, res) => {
-	Job.find({ "author.user_id": req.params.id }, (err, jobs) => {
+const getJob = asyncHandler(async (req, res) => {
+	console.log("calling getjob");
+	// find all documents with the given author's user id
+	Job.find({ "author.userId" : req.params.id }, (err, jobs) => {
 		if (err) res.status(400).send("No jobs found for author.");
-		return res.json(jobs);
+		console.log(jobs);
+		res.status(200).json(jobs);
 	});
 });
 
@@ -19,11 +22,12 @@ const setJob = asyncHandler(async (req, res) => {
 		title: req.body.title,
 		interests: req.body.interests,
 		majors: req.body.majors,
-		people: req.body.people,
 		description: req.body.description,
+		people: req.body.people,
 		skills: req.body.skills,
 		pay: req.body.pay,
 		questions: req.body.questions,
+		applications: [],
 	});
 	res.status(200).json(jobs);
 });
