@@ -4,7 +4,8 @@ const dotenv = require('dotenv').config();
 const app = express();
 const connectDB = require("./config/db");
 const userManagement = require("./routes/userManagement.js");
-const jobsRoutes = require("./routes/jobsRoutes.js");
+const jobRoutes = require("./routes/jobRoutes.js");
+const applicationRoutes = require("./routes/applicationRoutes");
 
 connectDB(); 
 
@@ -20,7 +21,9 @@ app.get("/products/:id", function (req, res, next) {
 });
 
 app.use("/api/user-management", userManagement);
-app.use("/api/jobs", jobsRoutes);
+app.use("/api/jobs", jobRoutes);
+//! TODO: make private or something
+app.use("/api/applications", applicationRoutes);
 
 app.listen(80, function () {
   console.log("CORS-enabled web server listening on port 80");
