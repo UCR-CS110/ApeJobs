@@ -11,7 +11,9 @@ const userSchema = new Schema(
 		major: String,
 		gpa: String,
 		department: String,
-		about: String
+		about: String,
+		// hold references to all of the users applications
+		applications: [{ type: Schema.Types.ObjectId, ref: "Application" }],
 	},
 	{ timestamps: true }
 );
