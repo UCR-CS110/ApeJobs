@@ -8,10 +8,10 @@ const getApplications = asyncHandler(async (req, res) => {
 });
 
 const getApplicationById = asyncHandler(async (req, res) => {
-	await Application.findOne({ id: req.params.id })
+	await Application.findOne({ _id: req.params.id })
 		.lean()
-		.then((item) => {
-			res.json(item);
+		.then((app) => {
+			res.json(app);
 		});
 });
 
