@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const applicationSchema = new Schema(
 	{
-		author: { type: Schema.Types.ObjectId, ref: 'Person'},
+		author: { type: Schema.Types.ObjectId, ref: 'User'},
 		title: String,
 		interests: [String],
 		majors: [String],
@@ -12,7 +12,7 @@ const applicationSchema = new Schema(
 		skills: [String],
 		pay: String,
 		questions: [String],
-		applications: [{ type: Schema.Types.ObjectId, ref: "Application" }]
+		
 	},
 	{ timestamps: true }
 );
