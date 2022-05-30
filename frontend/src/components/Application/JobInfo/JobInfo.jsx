@@ -25,7 +25,7 @@ export const JobInfo = ({ job }) => {
 					variant="h6"
 					sx={{ textAlign: "left", marginTop: "1em" }}
 				>
-					{job.author}
+					{job.author.name ? job.author.name : job.author}
 				</Typography>
 				{job?.majors.map((major) => (
 					<>
