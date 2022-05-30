@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { backendUrl } from "../../constants/backendUrl";
 import { majors } from "../../constants/majors";
+import { departments } from "../../constants/departments";
 import { interestsList } from "../../constants/interests";
 
 const maxGPA = 4;
@@ -21,6 +22,7 @@ const maxGPA = 4;
 export const Form = ({ type, email, name, picture, setUser }) => {
   const navigate = useNavigate();
   const [major, setMajor] = React.useState("");
+  const [about, setAbout] = React.useState("");
   const [GPA, setGPA] = React.useState(0);
   const [interests, setInterests] = React.useState([]);
   const [error, setError] = React.useState();
@@ -30,22 +32,24 @@ export const Form = ({ type, email, name, picture, setUser }) => {
     const user =
       type === "professor"
         ? {
-            email,
-            name,
-            department: major,
-            interests,
-            picture,
-            type,
-          }
+          email,
+          name,
+          department: major,
+          interests,
+          picture,
+          type,
+          about
+        }
         : {
-            email,
-            name,
-            major,
-            interests,
-            gpa: GPA,
-            picture,
-            type,
-          };
+          email,
+          name,
+          major,
+          interests,
+          gpa: GPA,
+          picture,
+          type,
+          about
+        };
     axios
       .post(`${backendUrl}/api/user-management/register`, user)
       .then((res) => {
@@ -73,9 +77,13 @@ export const Form = ({ type, email, name, picture, setUser }) => {
           onChange={(e) => setMajor(e.target.value)}
           required
         >
-          {majors.map((major, index) => (
+          {type === "student" ? majors.map((major, index) => (
             <MenuItem key={index} value={major}>
               {major}
+            </MenuItem>
+          )) : departments.map((department, index) => (
+            <MenuItem key={index} value={department}>
+              {department}
             </MenuItem>
           ))}
         </Select>
@@ -100,6 +108,20 @@ export const Form = ({ type, email, name, picture, setUser }) => {
           />
         </FormGroup>
       )}
+      <FormGroup>
+        <FormLabel id="about" sx={{ marginTop: "5%" }}>
+          About
+        </FormLabel>
+        <TextField
+          type="text"
+          label="about me"
+          name="about"
+          multiline
+          rows={3}
+          maxRows={Infinity}
+          onChange={(e) => setAbout(e.target.value)}
+        />
+      </FormGroup>
       <FormGroup>
         <FormLabel id="interest-select" sx={{ marginTop: "5%" }}>
           Interests
