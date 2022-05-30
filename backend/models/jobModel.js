@@ -10,8 +10,8 @@ const jobSchema = new Schema(
 		description: String,
 		people: Number,
 		skills: [String], 
-		pay: String,
 		questions: [String],
+		pay: String,
 	},
 	{ timestamps: true }
 );
