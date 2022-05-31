@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Application = require("../models/applicationModel");
 const Message = require("../models/messageModel");
+const Job = require("../models/jobModel");
 
 const getApplications = asyncHandler(async (req, res) => {
 	const apps = await Application.find();
@@ -14,6 +15,14 @@ const getApplicationById = asyncHandler(async (req, res) => {
 			res.json(item);
 		});
 });
+
+const getApplicationByJobId = asyncHandler( (req, res) => {
+	 Application.find({"job": req.params.job_id}, (err,apps)=>{
+		if(err) return res.status(400).send("No apps founds.");
+		res.json(apps);
+	});
+});
+
 
 // TODO: if an app for exists for the current user, do not let them create one
 // JSON structure
@@ -32,6 +41,11 @@ const setApplication = asyncHandler(async (req, res) => {
 		job: req.body.job, // job ref
 		status: req.body.status,
 		messages: [],
+	}, async(err,app)=>{
+		if(err || !app || !app.job) return res.status(400).send("Could not add app.");
+		await Job.findOneAndUpdate({_id: app.job.type}, {$push: {'applications': app._id}}, (err,job)=>{
+			if(err || !job) return res.status(400).send("Could not find job.");
+		})
 	});
 	res.status(200).json(apps);
 });
@@ -70,6 +84,7 @@ const sendMessage = asyncHandler(async (req, res) => {
 module.exports = {
 	getApplications,
 	getApplicationById,
+	getApplicationByJobId,
 	setApplication,
 	updateApplication,
 	deleteApplication,

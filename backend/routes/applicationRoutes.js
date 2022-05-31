@@ -9,11 +9,13 @@ const {
 	deleteApplication,
 	getMessages,
 	sendMessage,
+	getApplicationByJobId,
 } = require("../controllers/applicationController");
 
 // add logic in a function in controllers, export and call in routes
 
 router.route("/").get(getApplications).post(setApplication);
+router.route("/job/:job_id").get(getApplicationByJobId);
 router
 	.route("/:id")
 	.get(getApplicationById)
