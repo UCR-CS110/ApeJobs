@@ -3,7 +3,8 @@ const Application = require("../models/applicationModel");
 const Message = require("../models/messageModel");
 
 const getApplications = asyncHandler(async (req, res) => {
-	const apps = await Application.find();
+	const jobId = req.query.jobId;
+	const apps = jobId ? await Application.find({ job: jobId }).exec() : await Application.find();
 	res.status(200).json(apps);
 });
 
@@ -14,6 +15,7 @@ const getApplicationById = asyncHandler(async (req, res) => {
 			res.json(app);
 		});
 });
+
 
 // TODO: if an app for exists for the current user, do not let them create one
 // JSON structure
