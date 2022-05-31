@@ -4,6 +4,7 @@ import { Users } from "tabler-icons-react";
 import "./JobCard.css";
 import { useNavigate } from "react-router-dom";
 
+// TODO: account for undefined cases?
 export const JobCard = ({ job }) => {
   const navigate = useNavigate();
   return (
