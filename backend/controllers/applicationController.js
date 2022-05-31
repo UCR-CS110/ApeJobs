@@ -41,9 +41,9 @@ const setApplication = asyncHandler(async (req, res) => {
 		job: req.body.job, // job ref
 		status: req.body.status,
 		messages: [],
-	}, async(err,app)=>{
+	}, (err,app)=>{
 		if(err || !app || !app.job) return res.status(400).send("Could not add app.");
-		await Job.findOneAndUpdate({_id: app.job.type}, {$push: {'applications': app._id}}, (err,job)=>{
+			Job.findOneAndUpdate({_id: app.job}, {$push: {'applications': app._id}}, (err,job)=>{
 			if(err || !job) return res.status(400).send("Could not find job.");
 		})
 	});

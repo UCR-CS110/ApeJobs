@@ -9,7 +9,7 @@ import { Item, statusList } from "../Profile/Profile";
 const AppCard = ({ app }) => {
   return (
     <Link to={`/app/${app._id}`} style={{ textDecoration: "none" }} state={app}>
-      <Box className="hover" sx={{ flexGrow: 1 }}>
+      <Box className="hover">
         <Item sx={{ marginTop: "2em" }}>
           <Grid container direction="row">
             <Grid item xs={5}>
@@ -22,7 +22,7 @@ const AppCard = ({ app }) => {
                 {new Date(app.createdAt).toISOString().split('T')[0]}
               </Typography>
             </Grid>
-            <Grid item xs={2} sx={{textAlign: "right"}}>
+            <Grid item xs={5} sx={{textAlign: "right"}}>
               <Chip label={app.status} color={statusList[app.status]} />
             </Grid>
           </Grid>
@@ -62,9 +62,9 @@ export const JobListing = () => {
           </Typography>
           <Box mt={2} sx={{ flexGrow: 1 }}>
             <Grid container direction="column">
-              {apps.map((app, index) => (
+              {apps.length > 1 ? apps.map((app, index) => (
                 <AppCard key={index} app={app} />
-              ))}
+              )) : <p>No applications currently found.</p>}
             </Grid>
           </Box>
         </Item>
