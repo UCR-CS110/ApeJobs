@@ -4,12 +4,12 @@ const router = express.Router();
 const {
 	getApplications,
 	getApplicationById,
+	getApplicationByJobId,
 	setApplication,
 	updateApplication,
 	deleteApplication,
 	getMessages,
 	sendMessage,
-	getApplicationByJobId,
 } = require("../controllers/applicationController");
 
 // add logic in a function in controllers, export and call in routes
@@ -21,6 +21,7 @@ router
 	.get(getApplicationById)
 	.put(updateApplication)
 	.delete(deleteApplication);
+
 // TODO: may be a better way to route this but idk how
 router.route("/:id/messages").get(getMessages).post(sendMessage);
 

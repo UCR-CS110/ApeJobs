@@ -4,15 +4,16 @@ const Message = require("../models/messageModel");
 const Job = require("../models/jobModel");
 
 const getApplications = asyncHandler(async (req, res) => {
-	const apps = await Application.find();
+	const jobId = req.query.jobId;
+	const apps = jobId ? await Application.find({ job: jobId }).exec() : await Application.find();
 	res.status(200).json(apps);
 });
 
 const getApplicationById = asyncHandler(async (req, res) => {
-	await Application.findOne({ id: req.params.id })
+	await Application.findOne({ _id: req.params.id })
 		.lean()
-		.then((item) => {
-			res.json(item);
+		.then((app) => {
+			res.json(app);
 		});
 });
 
