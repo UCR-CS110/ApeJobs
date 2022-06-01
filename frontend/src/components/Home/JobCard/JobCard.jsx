@@ -19,7 +19,7 @@ export const JobCard = ({ job }) => {
       <Typography variant="h5" sx={{ textAlign: "left", fontWeight: "bold" }}>
         {job.title}
       </Typography>
-      <Typography variant="h6" sx={{ textAlign: "left", marginTop: "1em" }}>
+      <Typography variant="h6" sx={{ textAlign: "left", marginTop: "1em", color: "primary.main" }}>
         {job.author.name ? job.author.name : job.author}
       </Typography>
       <div className="interestHolder">

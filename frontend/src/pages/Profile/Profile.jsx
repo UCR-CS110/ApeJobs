@@ -68,20 +68,29 @@ const ProfilePicInfo = ({ user }) => {
             src={picture}
             alt="profile-img"
           />
-          <p>{name}</p>
-          <p>
+          <Typography
+            variant="body1"
+            sx={{ fontWeight: "bold", marginTop: "1em", color: "primary.main" }}
+          >
+            {name}
+          </Typography>
+          <Typography variant="body1" sx={{ marginTop: "1em" }}>
             {type === "student"
               ? `Major: ${major}`
               : `Department: ${department}`}
-          </p>
-          {type === "student" && <p>GPA: {gpa}</p>}
+          </Typography>
           {type === "student" && (
-            <p>
+            <Typography variant="body1" sx={{ marginTop: "1em" }}>
+              GPA: {gpa}
+            </Typography>
+          )}
+          {type === "student" && (
+            <Typography variant="body1" sx={{ marginY: "1em" }}>
               Resume PDF:{" "}
               <Button size="small" variant="contained">
                 download
               </Button>{" "}
-            </p>
+            </Typography>
           )}
           <Button variant="contained" onClick={() => setUser({})}>
             Sign Out
@@ -103,7 +112,7 @@ const Interests = ({ interests, about }) => {
           <Box mt={2} sx={{ flexGrow: 1 }}>
             <Grid container direction="row">
               {interests.length < 1 ? (
-                <p>No interests found.</p>
+                <Typography variant="body1">No interests found.</Typography>
               ) : (
                 interests.map((interest, index) => (
                   <Grid item xs={4}>
