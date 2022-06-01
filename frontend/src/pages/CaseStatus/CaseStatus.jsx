@@ -17,6 +17,9 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { backendUrl } from "../../constants/backendUrl";
+import { UserContext } from "../../contexts/UserContext/UserContext";
+import { useLocation } from "react-router-dom";
+
 
 import axios from "axios";
 
@@ -47,31 +50,45 @@ const Comment = ({ message }) => {
   );
 };
 
-const CommentContainer = () => {
-  const [application, setApplication] = React.useState([]);
+const CommentContainer = ({app}) => {
+  const [application, setApplication] = React.useState();
+  const {
+    _id,
+    name,
+    major,
+    gpa,
+    picture,
+    type,
+    department,
+    about,
+    interests,
+    setUser,
+  } = React.useContext(UserContext);
+ 
 
   React.useEffect(() => {
     //regex to remove %20 that appears in names with an apostrophe
     axios
-    .get(`${backendUrl}/api/applications/62974311990e265e0edd7a31`)
+    .get(`${backendUrl}/api/applications/${app._id}`)
     .then((res) => {
       setApplication(res.data);
     })
-      .catch((e) => {
-        console.log(e);
-      });
-    }, [application, setApplication]);
+    .catch((e) => {
+      console.log(e);
+    });
+    },[application, setApplication]);
+    
     
     const handleSubmit = () => {
-  
+      
       const msg = {
-        user: application.user.userId._id,
+        user: _id,
         message: "dog water",
         application: application._id 
       }
 
       axios
-        .post(`${backendUrl}/api/applications/62974311990e265e0edd7a31/messages`, msg)
+        .post(`${backendUrl}/api/applications/${app._id}/messages`, msg)
         .then((res) => {
           // setError();
           console.log(res.data);
@@ -85,10 +102,10 @@ const CommentContainer = () => {
   
     }
 
-console.log(application)
 
   return (
     <>
+    {application && 
       <Container>
         <Paper elevation={5}>
           <Box sx={{ boxShadow: 4 }} p={3}>
@@ -97,7 +114,7 @@ console.log(application)
             </Typography>
             <Divider />
             <Grid container spacing={4} alignItems="center">
-              {application.messages?.map((message, index) => (
+              {application.messages.map((message, index) => (
                 <Comment message={message} />
               ))}
               <Grid xs={9} item>
@@ -112,17 +129,20 @@ console.log(application)
           </Box>
         </Paper>
       </Container>
+      }
     </>
   );
 };
 
 export const CaseStatus = () => {
+  const location = useLocation();
+
   return (
     <>
       <Grid container spacing={2}>
         <Grid item xs={3}></Grid>
         <Grid mt={1} item xs={9}>
-          <CommentContainer />
+          <CommentContainer app={location.state}/>
         </Grid>
       </Grid>
     </>

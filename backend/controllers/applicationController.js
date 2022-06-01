@@ -18,7 +18,6 @@ const getApplications = asyncHandler(async (req, res) => {
 
 const getApplicationById = asyncHandler(async (req, res) => {
   await Application.findOne({ _id: req.params.id })
-    .lean()
     .populate({ path: "messages"})
 	.populate({path: "user.userId"})
 	.exec()
