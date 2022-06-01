@@ -3,11 +3,13 @@ import React from "react";
 import { JobCard } from "../../components/Home/JobCard/JobCard";
 import { SearchBar } from "../../components/Home/SearchBar/SearchBar";
 import { backendUrl } from "../../constants/backendUrl";
+import { UserContext } from "../../contexts/UserContext/UserContext";
 import { Box } from "@mui/material";
 
 //replace job map with job card component
 //remove default jobs when backend is completed
 export const Home = () => {
+  const { _id } = React.useContext(UserContext);
   const [jobs, setJobs] = React.useState([]);
   const [results, setResults] = React.useState();
 
@@ -15,12 +17,16 @@ export const Home = () => {
     axios
       .get(`${backendUrl}/api/jobs`)
       .then((res) => {
-        setJobs(res.data);
+        if (_id) {
+          setJobs(res.data.filter((job) => !job.applications.includes(_id)));
+        } else {
+          setJobs(res.data);
+        }
       })
       .catch((e) => {
         console.log(e);
       });
-  }, []);
+  }, [_id, setJobs]);
 
   return (
     <div className="homeContainer">
