@@ -19,8 +19,9 @@ export const Home = () => {
       .then((res) => {
         if (_id) {
           setJobs(
-            res.data.filter((job) =>
-              !applications.some((app) => job.applications.includes(app))
+            res.data.filter(
+              (job) =>
+                !applications.some((app) => job.applications.includes(app))
             )
           );
         } else {
@@ -41,12 +42,15 @@ export const Home = () => {
           setResults(
             jobs.filter((job) => {
               e = e.toLowerCase();
+              const name = job.author.name
+                ? job.author.name.toLowerCase()
+                : job.author.toLowerCase();
               return (
                 job.title.toLowerCase().includes(e) ||
                 job.interests
                   .map((interest) => interest.toLowerCase())
                   .includes(e) ||
-                job.author.toLowerCase().includes(e) ||
+                name.includes(e) ||
                 job.description.toLowerCase().includes(e)
               );
             })
