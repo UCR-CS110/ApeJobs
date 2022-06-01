@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Application = require("../models/applicationModel");
 const Message = require("../models/messageModel");
+const User = require("../models/userModel");
 
 const getApplications = asyncHandler(async (req, res) => {
 	const jobId = req.query.jobId;
@@ -9,7 +10,10 @@ const getApplications = asyncHandler(async (req, res) => {
 	if (jobId) {
 		apps = await Application.find({ job: jobId });
 	} else if (userId) {
-		apps = await Application.find({ "user.userId": userId });
+		// idk if i should put this here
+		// faster way
+		apps = (await User.findById(userId).populate("applications")).applications;
+		// apps = await Application.find({ "user.userId": userId });
 	} else {
 		apps = await Application.find();
 	}
