@@ -31,7 +31,6 @@ export const SignIn = () => {
         setUser(res.data);
         setError();
         if (!res.data._id) url = "/register";
-        console.log(url);
         navigate(url, { replace: true });
       })
       .catch((err) => {

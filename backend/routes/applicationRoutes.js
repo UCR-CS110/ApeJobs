@@ -14,17 +14,8 @@ const {
 
 // add logic in a function in controllers, export and call in routes
 
-const addQuery = (req, res, next) => {
-	req.query.id = "someID";
-	req.query.product = "bag";
-	next();
-};
-
-router
-	.route("/")
-	.get(getApplications)
-	.post(setApplication);
-
+router.route("/").get(getApplications).post(setApplication);
+router.route("/job/:job_id").get(getApplicationByJobId);
 router
 	.route("/:id")
 	.get(getApplicationById)

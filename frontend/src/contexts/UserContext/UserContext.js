@@ -12,13 +12,14 @@ const defaultContext = {
   major: null,
   gpa: null,
   about: null,
+  applications: [],
 };
 
 export const UserContext = React.createContext(defaultContext);
 
 export const UserContextProvider = (props) => {
   const setUser = (user) => {
-    setState({ ...state, ...user });
+    setState((prev) => ({...prev, ...user}));
   };
   const [state, setState] = React.useState({ ...defaultContext, setUser });
   return (

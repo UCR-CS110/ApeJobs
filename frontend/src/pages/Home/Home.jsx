@@ -9,7 +9,7 @@ import { Box } from "@mui/material";
 //replace job map with job card component
 //remove default jobs when backend is completed
 export const Home = () => {
-  const { _id } = React.useContext(UserContext);
+  const { _id, applications } = React.useContext(UserContext);
   const [jobs, setJobs] = React.useState([]);
   const [results, setResults] = React.useState();
 
@@ -18,7 +18,11 @@ export const Home = () => {
       .get(`${backendUrl}/api/jobs`)
       .then((res) => {
         if (_id) {
-          setJobs(res.data.filter((job) => !job.applications.includes(_id)));
+          setJobs(
+            res.data.filter((job) =>
+              !applications.some((app) => job.applications.includes(app))
+            )
+          );
         } else {
           setJobs(res.data);
         }
@@ -26,7 +30,7 @@ export const Home = () => {
       .catch((e) => {
         console.log(e);
       });
-  }, [_id, setJobs]);
+  }, [_id, applications, setJobs]);
 
   return (
     <div className="homeContainer">

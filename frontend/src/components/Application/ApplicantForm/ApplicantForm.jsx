@@ -10,7 +10,7 @@ import {
   FormGroup,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ArrowNarrowRight, ArrowNarrowLeft } from "tabler-icons-react";
 import { UserContext } from "../../../contexts/UserContext/UserContext";
@@ -33,7 +33,16 @@ const theme = createTheme({
 });
 
 export const ApplicantForm = ({ job }) => {
-  const { _id: userId, name, email, major, gpa } = useContext(UserContext);
+  const {
+    _id: userId,
+    name,
+    email,
+    major,
+    gpa,
+    about,
+    applications,
+    setUser,
+  } = useContext(UserContext);
   // const { name, email, major, gpa } = mockContext;
   const { _id: jobId, questions } = job;
   const [fieldInputs, setFieldInputs] = useState([]);
@@ -44,12 +53,10 @@ export const ApplicantForm = ({ job }) => {
   const navigate = useNavigate();
 
   // TODO: fix user login detection when we add tokens
-  useEffect(() => {
-    console.log(job.applications);
-    if(userId) setApplied(job.applications.includes(userId));
-  }, [job, setApplied, userId]);
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
     let fields = [];
     for (let i = 0; i < questions.length; i++) {
       fields.push({ question: questions[i], answer: fieldInputs[i] });
@@ -66,8 +73,8 @@ export const ApplicantForm = ({ job }) => {
     axios
       .post(`${backendUrl}/api/applications`, app)
       .then((res) => {
-        // setError();
-        console.log(res.data);
+        setApplied(true);
+        setUser({ applications: [...applications, res.data._id] });
       })
       .catch((e) => {
         console.log(e);
@@ -81,15 +88,12 @@ export const ApplicantForm = ({ job }) => {
     setFieldInputs(inputs);
   };
 
-  const isLoggedIn = () => {
-    return (
-      userId === null &&
-      name === null &&
-      email === null &&
-      major === null &&
-      gpa === null
-    );
-  };
+  const isLoggedIn =
+    userId === null &&
+    name === null &&
+    email === null &&
+    major === null &&
+    gpa === null;
 
   const handleClick = () => {
     navigate("/signin");
@@ -106,7 +110,7 @@ export const ApplicantForm = ({ job }) => {
             Apply w/ ApeJobs Info
           </Typography>
         </Box>
-        {isLoggedIn() ? (
+        {isLoggedIn ? (
           <Box p={11}>
             <Button variant="contained" size="large" onClick={handleClick}>
               Login to apply
@@ -129,6 +133,9 @@ export const ApplicantForm = ({ job }) => {
                   <Grid align="left" item xs={6}>
                     <Typography variant="h6">{gpa}</Typography>
                   </Grid>
+                  <Grid align="left" item xs={6}>
+                    <Typography variant="body1">{about}</Typography>
+                  </Grid>
                 </Grid>
               </Box>
             ) : (
@@ -144,9 +151,15 @@ export const ApplicantForm = ({ job }) => {
                   justifyContent="flex-end"
                   alignItems="flex-end"
                 >
-                  <Button variant="contained" onClick={handleSubmit}>
-                    Apply
-                  </Button>
+                  {!applied ? (
+                    <Button variant="contained" onClick={handleSubmit}>
+                      Apply
+                    </Button>
+                  ) : (
+                    <Typography variant="body1">
+                      You have already applied for this role.
+                    </Typography>
+                  )}
                 </Box>
               </>
             )}
@@ -158,7 +171,15 @@ export const ApplicantForm = ({ job }) => {
                 justifyContent="flex-end"
                 alignItems="flex-end"
               >
-                <Button variant="contained">Apply</Button>
+                {!applied ? (
+                  <Button variant="contained" onClick={handleSubmit}>
+                    Apply
+                  </Button>
+                ) : (
+                  <Typography variant="body1">
+                    You have already applied for this role.
+                  </Typography>
+                )}
               </Box>
             ) : (
               <>
