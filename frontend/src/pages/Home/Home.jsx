@@ -40,7 +40,6 @@ export const Home = () => {
         .get(`${backendUrl}/api/user-management/user`)
         .then((res) => {
           setUser(res.data);
-          console.log("got", res.data);
         })
         .catch((e) => {
           console.log(e);

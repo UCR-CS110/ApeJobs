@@ -40,15 +40,16 @@ export const SignIn = () => {
 
   React.useEffect(() => {
     if (!_id && Cookies.get("token")) axios
-      .get(`${backendUrl}/api/user`,)
+      .get(`${backendUrl}/api/user-management/user`,)
       .then((res) => {
         setUser(res.data);
+        navigate("/", { replace: true });
       })
       .catch((e) => {
         console.log(e);
         Cookies.remove("token");
       });
-  }, [_id, setUser]);
+  }, [_id, setUser, navigate]);
 
   return (
     <>

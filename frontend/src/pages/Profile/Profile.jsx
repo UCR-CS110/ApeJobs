@@ -14,6 +14,7 @@ import { interestsList } from "../../constants/interests";
 import axios from "axios";
 import { backendUrl } from "../../constants/backendUrl";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -83,7 +84,13 @@ const ProfilePicInfo = ({ user }) => {
               </Button>{" "}
             </p>
           )}
-          <Button variant="contained" onClick={() => setUser({})}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              Cookies.remove("token");
+              setUser({ _id: null, picture: null });
+            }}
+          >
             Sign Out
           </Button>
         </Box>
