@@ -4,15 +4,15 @@ const Message = require("../models/messageModel");
 
 const getApplications = asyncHandler(async (req, res) => {
   const jobId = req.query.jobId;
-  const userId = req.query.userId;
-  let apps;
-  if (jobId) {
-	  apps = await Application.find({ job: jobId });
-  } else if (userId) {
-	  apps = await Application.find({ "user.userId": userId });
-  } else {
-	  apps = await Application.find();
-  }
+const userId = req.query.userId;
+	let apps;
+	if (jobId) {
+		apps = await Application.find({ job: jobId });
+	} else if (userId) {
+		apps = await Application.find({ "user.userId": userId });
+	} else {
+		apps = await Application.find();
+	}
   res.status(200).json(apps);
 });
 

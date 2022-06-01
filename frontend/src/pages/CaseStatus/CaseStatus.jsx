@@ -19,6 +19,7 @@ import { styled } from "@mui/material/styles";
 import { backendUrl } from "../../constants/backendUrl";
 import { UserContext } from "../../contexts/UserContext/UserContext";
 import { useLocation } from "react-router-dom";
+import { JobInfo } from "../../components/Application/JobInfo/JobInfo";
 import axios from "axios";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -27,31 +28,30 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
   color: theme.palette.text.primary,
   paddingRight: theme.spacing(2),
-  boxShadow: 6
+  boxShadow: 6,
 }));
 
 const Comment = ({ message, picture }) => {
   return (
     <>
-    <Grid my={"1em"} mr={"1em"} item xs={12}>
-      <StyledPaper>
-        <Grid container wrap="nowrap" spacing={2}>
-          <Grid item>
-            <Avatar src={picture} ></Avatar>
+      <Grid my={"1em"} mr={"1em"} item xs={12}>
+        <StyledPaper>
+          <Grid container wrap="nowrap" spacing={2}>
+            <Grid item>
+              <Avatar src={picture}></Avatar>
+            </Grid>
+            <Grid item xs>
+              <Typography>{message.message}</Typography>
+            </Grid>
           </Grid>
-          <Grid item xs>
-            <Typography>{message.message}</Typography>
-          </Grid>
-        </Grid>
-      </StyledPaper>
-    </Grid>
-
+        </StyledPaper>
+      </Grid>
     </>
   );
 };
 
-const CommentContainer = ({ app }) => {
-  const [application, setApplication] = React.useState();
+const CommentContainer = ({ app, application}) => {
+ // const [application, setApplication] = React.useState();
   const [userMessage, setUserMessage] = React.useState("");
   const {
     _id,
@@ -66,19 +66,8 @@ const CommentContainer = ({ app }) => {
     setUser,
   } = React.useContext(UserContext);
 
-  React.useEffect(() => {
-    //regex to remove %20 that appears in names with an apostrophe
-    axios
-      .get(`${backendUrl}/api/applications/${app._id}`)
-      .then((res) => {
-        setApplication(res.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, [application, setApplication]);
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const msg = {
       user: _id,
@@ -122,7 +111,7 @@ const CommentContainer = ({ app }) => {
                     item
                   >
                     {application.messages.map((message, index) => (
-                      <Comment message={message} picture={picture}/>
+                      <Comment message={message} picture={picture} />
                     ))}
                   </Grid>
                   <Grid xs={9} mt={"1em"} item>
@@ -134,13 +123,18 @@ const CommentContainer = ({ app }) => {
                           setUserMessage(event.target.value);
                         }}
                         variant="outlined"
-                        required 
+                        required
                         fullWidth
                       />
                     </form>
                   </Grid>
                   <Grid xs={3} item>
-                    <Button type="submit" disabled={!userMessage} onClick={handleSubmit} variant="contained">
+                    <Button
+                      type="submit"
+                      disabled={!userMessage}
+                      onClick={handleSubmit}
+                      variant="contained"
+                    >
                       Send
                     </Button>
                   </Grid>
@@ -155,14 +149,29 @@ const CommentContainer = ({ app }) => {
 };
 
 export const CaseStatus = () => {
+  const [application, setApplication] = React.useState();
   const location = useLocation();
+  React.useEffect(() => {
+    //regex to remove %20 that appears in names with an apostrophe
+    axios
+      .get(`${backendUrl}/api/applications/${location.state._id}`)
+      .then((res) => {
+        setApplication(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, [application, setApplication]);
+
 
   return (
     <>
       <Grid container spacing={2}>
-        <Grid item xs={3}></Grid>
-        <Grid mt={1} item xs={9}>
-          <CommentContainer app={location.state} />
+        <Grid mt={"1em"} item xs={3}>
+          {application && <JobInfo job={application.job} />}
+        </Grid>
+        <Grid mt={"1em"} item xs={9}>
+          <CommentContainer app={location.state} application={application}/>
         </Grid>
       </Grid>
     </>
