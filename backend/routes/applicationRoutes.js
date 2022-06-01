@@ -13,13 +13,6 @@ const {
 } = require("../controllers/applicationController");
 
 // add logic in a function in controllers, export and call in routes
-
-const addQuery = (req, res, next) => {
-	req.query.id = "someID";
-	req.query.product = "bag";
-	next();
-};
-
 router
 	.route("/")
 	.get(getApplications)

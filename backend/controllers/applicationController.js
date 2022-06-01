@@ -4,18 +4,29 @@ const Message = require("../models/messageModel");
 
 const getApplications = asyncHandler(async (req, res) => {
 	const jobId = req.query.jobId;
-	const apps = jobId ? await Application.find({ job: jobId }).exec() : await Application.find();
+	const userId = req.query.userId;
+	let apps;
+	if (jobId) {
+		apps = await Application.find({ job: jobId });
+	} else if (userId) {
+		apps = await Application.find({ "user.userId": userId });
+	} else {
+		apps = await Application.find();
+	}
 	res.status(200).json(apps);
 });
 
 const getApplicationById = asyncHandler(async (req, res) => {
-	await Application.findOne({ _id: req.params.id })
-		.lean()
-		.then((app) => {
-			res.json(app);
-		});
+	const status = req.query.status === "true";
+	if (status) {
+		await Application.findOne({ _id: req.params.id })
+			.lean()
+			.then((app) => res.status(200).json({ status: app.status }));
+	} else
+		await Application.findOne({ _id: req.params.id })
+			.lean()
+			.then((app) => res.status(200).json(app));
 });
-
 
 // TODO: if an app for exists for the current user, do not let them create one
 // JSON structure
