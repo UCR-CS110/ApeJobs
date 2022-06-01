@@ -19,6 +19,7 @@ const userId = req.query.userId;
 const getApplicationById = asyncHandler(async (req, res) => {
   await Application.findOne({ _id: req.params.id })
     .populate({ path: "messages"})
+	.populate({path:"job"})
 	.populate({path: "user.userId"})
 	.exec()
     .then((app) => {
@@ -69,6 +70,7 @@ const sendMessage = asyncHandler(async (req, res) => {
     user: req.body.user, // user ref
     message: req.body.message,
     application: req.body.application, // app ref
+	picture: req.body.picture,
   });
 
   await Application.findOneAndUpdate(

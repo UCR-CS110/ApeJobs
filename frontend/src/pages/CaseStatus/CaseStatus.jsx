@@ -73,6 +73,7 @@ const CommentContainer = ({ app, application}) => {
       user: _id,
       message: userMessage,
       application: application._id,
+      picture: picture
     };
 
     axios
@@ -168,12 +169,19 @@ export const CaseStatus = () => {
     <>
       <Grid container spacing={2}>
         <Grid mt={"1em"} item xs={3}>
-          {application && <JobInfo job={application.job} />}
+          <Grid container spacing={2}>
+              <Grid item xs={12}>
+                {application && <JobInfo job={application.job} />}
+              </Grid>
+              <Grid item xs={12}>
+                {application && <JobInfo job={application.job} />}
+              </Grid>
+          </Grid>
         </Grid>
         <Grid mt={"1em"} item xs={9}>
           <CommentContainer app={location.state} application={application}/>
         </Grid>
-      </Grid>
+      </Grid> 
     </>
   );
 };

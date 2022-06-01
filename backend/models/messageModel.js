@@ -9,6 +9,7 @@ const messageSchema = new Schema(
 				ref: "User",
 			},
 			name: String,
+			picture: String,
 		},
 		message: String,
 		// a two way ref is fine given we arent going to reassign messages to application
