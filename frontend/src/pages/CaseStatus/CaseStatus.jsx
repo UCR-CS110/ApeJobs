@@ -50,8 +50,8 @@ const Comment = ({ message, picture }) => {
   );
 };
 
-const CommentContainer = ({ app, application}) => {
- // const [application, setApplication] = React.useState();
+const CommentContainer = ({ app, application }) => {
+  // const [application, setApplication] = React.useState();
   const [userMessage, setUserMessage] = React.useState("");
   const {
     _id,
@@ -66,21 +66,20 @@ const CommentContainer = ({ app, application}) => {
     setUser,
   } = React.useContext(UserContext);
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const msg = {
       user: _id,
       message: userMessage,
       application: application._id,
-      picture: picture
+      picture: picture,
     };
 
     axios
       .post(`${backendUrl}/api/applications/${app._id}/messages`, msg)
       .then((res) => {
         // setError();
-        console.log(res.data);
+        //console.log(res.data);
       })
       .catch((e) => {
         console.log(e);
@@ -149,6 +148,38 @@ const CommentContainer = ({ app, application}) => {
   );
 };
 
+export const Question = ({ question }) => {
+  return (
+    <>
+    <Box my={"1em"}>
+      <Typography inline variant="body1" align="left">
+        <Box sx={{ fontWeight: "bold" }}>{question.question}</Box>
+      </Typography>
+      <Typography inline variant="body1" align="left">
+        {question.answer}
+      </Typography>
+    </Box>
+    </>
+  );
+};
+
+export const QuestionsCard = ({ job }) => {
+  return (
+    <>
+      <Paper elevation={5}>
+        <Box sx={{ boxShadow: 4 }} p={3}>
+          <Typography inline variant="h5" align="left">
+            <Box sx={{ fontWeight: "bold" }}>Questions</Box>
+          </Typography>
+          {job.optionalFields.map((question, index) => (
+            <Question question={question} />
+          ))}
+        </Box>
+      </Paper>
+    </>
+  );
+};
+
 export const CaseStatus = () => {
   const [application, setApplication] = React.useState();
   const location = useLocation();
@@ -164,24 +195,23 @@ export const CaseStatus = () => {
       });
   }, [application, setApplication]);
 
-
   return (
     <>
-      <Grid container spacing={2}>
-        <Grid mt={"1em"} item xs={3}>
+      <Grid container>
+        <Grid ml={4} mr={"4em"} mt={"1em"} item xs={4}>
           <Grid container spacing={2}>
-              <Grid item xs={12}>
-                {application && <JobInfo job={application.job} />}
-              </Grid>
-              <Grid item xs={12}>
-                {application && <JobInfo job={application.job} />}
-              </Grid>
+            <Grid item xs={12}>
+              {application && <JobInfo job={application.job} />}
+            </Grid>
+            <Grid item xs={12}>
+              {application && <QuestionsCard job={application} />}
+            </Grid>
           </Grid>
         </Grid>
-        <Grid mt={"1em"} item xs={9}>
-          <CommentContainer app={location.state} application={application}/>
+        <Grid  mt={"1em"} item xs={7}>
+          <CommentContainer app={location.state} application={application} />
         </Grid>
-      </Grid> 
+      </Grid>
     </>
   );
 };
