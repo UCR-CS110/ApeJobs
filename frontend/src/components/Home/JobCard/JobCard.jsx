@@ -10,7 +10,7 @@ export const JobCard = ({ job }) => {
   return (
     <Card
       className="hover"
-      sx={{ margin: "auto", marginTop: "2em", width: "60%", padding: "1%" }}
+      sx={{ margin: "auto", marginTop: "2em", width: "60%", padding: "1%",  boxShadow: 5}}
       onClick={() => {
         // passing state into the next page
         navigate(`/listing/${job._id}/apply`, {state: job});

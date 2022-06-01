@@ -53,7 +53,7 @@ const ProfilePicInfo = ({ user }) => {
   const { name, major, gpa, picture, type, department, setUser } = user;
   return (
     <>
-      <Item>
+      <Item sx={{ boxShadow: 4 }}>
         <Box
           sx={{ flexDirection: "column" }}
           style={{
@@ -104,7 +104,7 @@ const ProfilePicInfo = ({ user }) => {
 const Interests = ({ interests, about }) => {
   return (
     <>
-      <Item sx={{ marginY: "1em", padding: "1.5em" }}>
+      <Item sx={{ marginY: "1em", padding: "1.5em", boxShadow: 4}}>
         <Box>
           <Typography inline variant="body1" align="left">
             <Box sx={{ fontWeight: "bold" }}>Interests:</Box>
@@ -153,8 +153,8 @@ const Interests = ({ interests, about }) => {
 const ApplicationCard = ({ job }) => {
   return (
     <>
-      <Box className="hover" sx={{ flexGrow: 1 }}>
-        <Item sx={{ marginTop: "2em" }}>
+      <Box className="hover" sx={{ flexGrow: 1}}>
+        <Item sx={{ marginTop: "2em", boxShadow: 1}}>
           <Grid container direction="row">
             <Grid item xs={5}>
               <Typography sx={{ textAlign: "left", fontWeight: "bold" }}>
@@ -179,7 +179,7 @@ const ApplicationCard = ({ job }) => {
 const Applications = () => {
   return (
     <>
-      <Item sx={{ marginX: "1em" }}>
+      <Item sx={{ marginX: "1em", boxShadow: 4 }}>
         <Typography inline variant="body1" align="left">
           <Box sx={{ fontWeight: "bold" }}>Applications</Box>
         </Typography>
@@ -198,7 +198,7 @@ const Applications = () => {
 const Listings = ({ jobs }) => {
   return (
     <>
-      <Item sx={{ marginX: "1em", padding: "1.5em" }}>
+      <Item sx={{ marginX: "1em", padding: "1.5em", boxShadow: 4 }}>
         <Link to="/new-job">
           <Button
             variant="contained"
@@ -234,7 +234,7 @@ const ListingCard = ({ job }) => {
       state={job}
     >
       <Box className="hover" sx={{ flexGrow: 1 }}>
-        <Item sx={{ marginTop: "2em" }}>
+        <Item sx={{ marginTop: "2em", boxShadow: 1 }}>
           <Grid container direction="row">
             <Grid item xs={5}>
               <Typography sx={{ textAlign: "left", fontWeight: "bold" }}>

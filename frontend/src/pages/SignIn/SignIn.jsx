@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { Typography } from "@mui/material";
+import { Typography, Card } from "@mui/material";
 import { GoogleLogin } from "react-google-login";
 import { UserContext } from "../../contexts/UserContext/UserContext";
 import { useNavigate } from "react-router-dom";
@@ -44,7 +44,7 @@ export const SignIn = () => {
       <Typography variant="h2" sx={{ marginTop: "10%" }}>
         Welcome.
       </Typography>
-      <div className="signinContainer">
+      <Card sx={{ boxShadow: 5 }} className="signinContainer">
         <Typography variant="body1">
           Connect your UCR Google account to continue.
         </Typography>
@@ -55,10 +55,11 @@ export const SignIn = () => {
           onSuccess={handleLogin}
           onFailure={() =>
             setError("Error authenticating with Google. Please try again.")
+
           }
           cookiePolicy={"single_host_origin"}
         />
-      </div>
+      </Card>
       {error && (
         <Typography variant="body2" color="error" sx={{ marginTop: "2%" }}>
           {error}
