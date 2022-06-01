@@ -67,7 +67,7 @@ const ProfilePicInfo = ({ user }) => {
               </Button>{" "}
             </p>
           )}
-          <Button variant="contained" onClick={() => setUser({})}>
+          <Button variant="contained" onClick={() => setUser({ _id: null })}>
             Sign Out
           </Button>
         </Box>
@@ -127,6 +127,17 @@ const Interests = ({ interests, about }) => {
 
 const ApplicationCard = ({ job }) => {
   const navigate = useNavigate();
+  const [title, setTitle] = React.useState(null);
+  React.useEffect(() => {
+    axios
+      .get(`${backendUrl}/api/jobs/job/${job.job}`)
+      .then((res) => {
+        setTitle(res.data.title);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, [job]);
   return (
     <>
       <Box
@@ -141,7 +152,7 @@ const ApplicationCard = ({ job }) => {
           <Grid container direction="row">
             <Grid item xs={5}>
               <Typography sx={{ textAlign: "left", fontWeight: "bold" }}>
-                {job.title}
+                {title ? title : "No title found."}
               </Typography>
             </Grid>
             <Grid item xs={2}>
