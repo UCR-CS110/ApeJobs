@@ -3,7 +3,13 @@ const { Schema } = mongoose;
 
 const jobSchema = new Schema(
 	{
-		author: { user_id: mongoose.Types.ObjectId, name: String },
+		author: {
+			userId: {
+				type: Schema.Types.ObjectId,
+				ref: "User",
+			},
+			name: String,
+		},
 		title: String,
 		interests: [String],
 		majors: [String],
@@ -12,7 +18,8 @@ const jobSchema = new Schema(
 		skills: [String],
 		pay: String,
 		questions: [String],
-		applications: []
+		// hold references to all the applications for this job listing
+		applications: [{ type: Schema.Types.ObjectId, ref: "Application" }],
 	},
 	{ timestamps: true }
 );

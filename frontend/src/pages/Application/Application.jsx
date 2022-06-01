@@ -8,7 +8,7 @@ import { Grid } from "@mui/material";
 //remove default jobs when backend is completed
 export const Application = () => {
 	const location = useLocation();
-	console.log(location.state);
+	// console.log(location.state);
 
 	return (
 		<>
