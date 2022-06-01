@@ -19,39 +19,40 @@ import { styled } from "@mui/material/styles";
 import { backendUrl } from "../../constants/backendUrl";
 import { UserContext } from "../../contexts/UserContext/UserContext";
 import { useLocation } from "react-router-dom";
-
-
 import axios from "axios";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
-  padding: theme.spacing(2),
-  maxWidth: 400,
+  padding: theme.spacing(3),
   color: theme.palette.text.primary,
+  paddingRight: theme.spacing(2),
+  boxShadow: 6
 }));
 
-const Comment = ({ message }) => {
+const Comment = ({ message, picture }) => {
   return (
     <>
-      <Grid mt={"1em"} id="chat-window" xs={12} item>
-        <StyledPaper>
-          <Grid container wrap="nowrap" spacing={2}>
-            <Grid item>
-              <Avatar>W</Avatar>
-            </Grid>
-            <Grid item xs>
-              <Typography>{message.message}</Typography>
-            </Grid>
+    <Grid my={"1em"} mr={"1em"} item xs={12}>
+      <StyledPaper>
+        <Grid container wrap="nowrap" spacing={2}>
+          <Grid item>
+            <Avatar src={picture} ></Avatar>
           </Grid>
-        </StyledPaper>
-      </Grid>
+          <Grid item xs>
+            <Typography>{message.message}</Typography>
+          </Grid>
+        </Grid>
+      </StyledPaper>
+    </Grid>
+
     </>
   );
 };
 
-const CommentContainer = ({app}) => {
+const CommentContainer = ({ app }) => {
   const [application, setApplication] = React.useState();
+  const [userMessage, setUserMessage] = React.useState("");
   const {
     _id,
     name,
@@ -64,72 +65,91 @@ const CommentContainer = ({app}) => {
     interests,
     setUser,
   } = React.useContext(UserContext);
- 
 
   React.useEffect(() => {
     //regex to remove %20 that appears in names with an apostrophe
     axios
-    .get(`${backendUrl}/api/applications/${app._id}`)
-    .then((res) => {
-      setApplication(res.data);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-    },[application, setApplication]);
-    
-    
-    const handleSubmit = () => {
-      
-      const msg = {
-        user: _id,
-        message: "dog water",
-        application: application._id 
-      }
+      .get(`${backendUrl}/api/applications/${app._id}`)
+      .then((res) => {
+        setApplication(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, [application, setApplication]);
 
-      axios
-        .post(`${backendUrl}/api/applications/${app._id}/messages`, msg)
-        .then((res) => {
-          // setError();
-          console.log(res.data);
-        })
-        .catch((e) => {
-          console.log(e);
-          // setError(
-          // 	"Unable to complete your request. Please try again later."
-          // );
-        });
-  
-    }
+  const handleSubmit = e => {
+    e.preventDefault();
+    const msg = {
+      user: _id,
+      message: userMessage,
+      application: application._id,
+    };
 
+    axios
+      .post(`${backendUrl}/api/applications/${app._id}/messages`, msg)
+      .then((res) => {
+        // setError();
+        console.log(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+        // setError(
+        // 	"Unable to complete your request. Please try again later."
+        // );
+      });
+
+    setUserMessage("");
+  };
 
   return (
     <>
-    {application && 
-      <Container>
+      {application && (
         <Paper elevation={5}>
           <Box sx={{ boxShadow: 4 }} p={3}>
-            <Typography variant="h4" gutterBottom>
-              Comments
-            </Typography>
-            <Divider />
-            <Grid container spacing={4} alignItems="center">
-              {application.messages.map((message, index) => (
-                <Comment message={message} />
-              ))}
-              <Grid xs={9} item>
-                <FormControl fullWidth>
-                  <TextField label="Type your message..." variant="outlined" />
-                </FormControl>
+            <Grid container direction="row" alignItems="center">
+              <Grid item xs={12}>
+                <Typography variant="h4" gutterBottom>
+                  Comments
+                </Typography>
+                <Divider />
               </Grid>
-              <Grid xs={3} item>
-                <Button onClick={handleSubmit} variant="contained">Send</Button>
+              <Grid item xs={12}>
+                <Grid container m="1em" alignItems="center">
+                  <Grid
+                    sx={{ height: "30rem", overflowY: "scroll" }}
+                    xs={12}
+                    item
+                  >
+                    {application.messages.map((message, index) => (
+                      <Comment message={message} picture={picture}/>
+                    ))}
+                  </Grid>
+                  <Grid xs={9} mt={"1em"} item>
+                    <form className="user-message" onSubmit={handleSubmit}>
+                      <TextField
+                        label="Type your message..."
+                        value={userMessage}
+                        onChange={(event) => {
+                          setUserMessage(event.target.value);
+                        }}
+                        variant="outlined"
+                        required 
+                        fullWidth
+                      />
+                    </form>
+                  </Grid>
+                  <Grid xs={3} item>
+                    <Button type="submit" disabled={!userMessage} onClick={handleSubmit} variant="contained">
+                      Send
+                    </Button>
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
           </Box>
         </Paper>
-      </Container>
-      }
+      )}
     </>
   );
 };
@@ -142,7 +162,7 @@ export const CaseStatus = () => {
       <Grid container spacing={2}>
         <Grid item xs={3}></Grid>
         <Grid mt={1} item xs={9}>
-          <CommentContainer app={location.state}/>
+          <CommentContainer app={location.state} />
         </Grid>
       </Grid>
     </>
