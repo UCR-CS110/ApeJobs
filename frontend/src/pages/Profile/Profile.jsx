@@ -94,8 +94,10 @@ const Interests = ({ interests, about }) => {
 };
 
 const ApplicationCard = ({ job }) => {
+
   return (
     <>
+    <Link to={"/profile/applications/1"} style={{ textDecoration: 'none' }}>
       <Box className="hover" sx={{ flexGrow: 1 }}>
         <Item sx={{ marginTop: "2em" }} >
           <Grid container direction="row">
@@ -115,6 +117,7 @@ const ApplicationCard = ({ job }) => {
           </Grid>
         </Item>
       </Box>
+    </Link>
     </>
   );
 };

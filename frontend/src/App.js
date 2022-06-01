@@ -9,6 +9,7 @@ import { Register } from "./pages/Register/Register";
 import { Application } from "./pages/Application/Application";
 import { UserContextProvider } from "./contexts/UserContext/UserContext";
 import { NavBar } from "./components/NavBar/NavBar";
+import {CaseStatus} from "./pages/CaseStatus/CaseStatus"
 import "./App.css";
 
 const routes = [
@@ -17,6 +18,7 @@ const routes = [
   { title: "signin", element: <SignIn /> },
   { title: "register", element: <Register /> },
   { title: "/listing/:id/apply", element: <Application /> },
+  { title: "/profile/applications/:id", element: <CaseStatus/>}
 ];
 
 export const App = () => {
