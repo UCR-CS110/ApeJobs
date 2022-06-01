@@ -26,28 +26,11 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const statusList = {
-  Pending: "warning",
-  Denied: "error",
-  Accepted: "success",
+  pending: "warning",
+  denied: "error",
+  accepted: "success",
 };
 
-const jobsApplied = [
-  {
-    title: "CS178 Grader",
-    date: "05/19/2022",
-    status: "Pending",
-  },
-  {
-    title: "Researcher",
-    date: "05/19/2022",
-    status: "Accepted",
-  },
-  {
-    title: "CS120B Grader",
-    date: "05/19/2022",
-    status: "Denied",
-  },
-];
 
 const ProfilePicInfo = ({ user }) => {
   const { name, major, gpa, picture, type, department, setUser } = user;
@@ -143,9 +126,9 @@ const Interests = ({ interests, about }) => {
 
 const ApplicationCard = ({ job }) => {
   const navigate = useNavigate();
+  const date = new Date(job.createdAt)
   return (
     <>
- 
         <Box  onClick={() => {
                   // passing state into the next page
                   navigate(`/profile/applications/${job._id}`, { state: job });
@@ -154,16 +137,16 @@ const ApplicationCard = ({ job }) => {
             <Grid container direction="row">
               <Grid item xs={5}>
                 <Typography sx={{ textAlign: "left", fontWeight: "bold" }}>
-                  {job.title}
+                  {job.job.title}
                 </Typography>
               </Grid>
               <Grid item xs={2}>
                 <Typography sx={{ textAlign: "center", fontWeight: "bold" }}>
-                  {job.date}
+                  {date.toDateString()}  
                 </Typography>
               </Grid>
               <Grid sx={{ textAlign: "right" }} item xs={5}>
-                <Chip label={job.status} color={statusList[job.status]} />
+                <Chip label={job.status.charAt(0).toUpperCase() + job.status.slice(1)} color={statusList[job.status]} />
               </Grid>
             </Grid>
           </Item>
@@ -174,7 +157,6 @@ const ApplicationCard = ({ job }) => {
 };
 
 const Applications = ({ jobs }) => {
-
   return (
     <>
       <Item sx={{ marginX: "1em", overflowY: "scroll" }}>

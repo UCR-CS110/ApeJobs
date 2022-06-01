@@ -9,7 +9,8 @@ const userId = req.query.userId;
 	if (jobId) {
 		apps = await Application.find({ job: jobId });
 	} else if (userId) {
-		apps = await Application.find({ "user.userId": userId });
+		apps = await Application.find({ "user.userId": userId })
+    .populate({path: "job"})
 	} else {
 		apps = await Application.find();
 	}
@@ -70,7 +71,7 @@ const sendMessage = asyncHandler(async (req, res) => {
     user: req.body.user, // user ref
     message: req.body.message,
     application: req.body.application, // app ref
-	picture: req.body.picture,
+	  picture: req.body.picture,
   });
 
   await Application.findOneAndUpdate(

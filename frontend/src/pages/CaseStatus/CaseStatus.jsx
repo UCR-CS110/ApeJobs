@@ -55,14 +55,7 @@ const CommentContainer = ({ app, application }) => {
   const [userMessage, setUserMessage] = React.useState("");
   const {
     _id,
-    name,
-    major,
-    gpa,
     picture,
-    type,
-    department,
-    about,
-    interests,
     setUser,
   } = React.useContext(UserContext);
 
