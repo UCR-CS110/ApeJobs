@@ -5,11 +5,12 @@ import { SearchBar } from "../../components/Home/SearchBar/SearchBar";
 import { backendUrl } from "../../constants/backendUrl";
 import { UserContext } from "../../contexts/UserContext/UserContext";
 import { Box } from "@mui/material";
+import Cookies from "js-cookie";
 
-//replace job map with job card component
-//remove default jobs when backend is completed
+axios.defaults.withCredentials = true;
+
 export const Home = () => {
-  const { _id, applications } = React.useContext(UserContext);
+  const { _id, applications, setUser } = React.useContext(UserContext);
   const [jobs, setJobs] = React.useState([]);
   const [results, setResults] = React.useState();
 
@@ -32,6 +33,21 @@ export const Home = () => {
         console.log(e);
       });
   }, [_id, applications, setJobs]);
+
+  React.useEffect(() => {
+    if (!_id && Cookies.get("token"))
+      axios
+        .get(`${backendUrl}/api/user-management/user`)
+        .then((res) => {
+          setUser(res.data);
+          console.log("got", res.data);
+        })
+        .catch((e) => {
+          console.log(e);
+          Cookies.remove("token");
+          console.log("sent  with error");
+        });
+  }, [_id, setUser]);
 
   return (
     <div className="homeContainer">
