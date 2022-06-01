@@ -15,19 +15,15 @@ export const SignIn = () => {
 
   const handleLogin = (googleData) => {
     axios
-      .post(
+      .get(
         `${backendUrl}/api/user-management/auth-google`,
         {
-          token: googleData.tokenId,
+          headers: { "Authorization": googleData.tokenId, "Content-Type": "application/json", 'Access-Control-Allow-Credentials':true},
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
       )
       .then((res) => {
         let url = "/";
+        console.log(res.data);
         setUser(res.data);
         setError();
         if (!res.data._id) url = "/register";

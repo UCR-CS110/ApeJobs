@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { authToken } = require("../middleware/authToken");
 
 const {
 	getApplications,
@@ -14,24 +15,18 @@ const {
 
 // add logic in a function in controllers, export and call in routes
 
-const addQuery = (req, res, next) => {
-	req.query.id = "someID";
-	req.query.product = "bag";
-	next();
-};
-
 router
 	.route("/")
-	.get(getApplications)
-	.post(setApplication);
+	.get(authToken, getApplications)
+	.post(authToken, setApplication);
 
 router
 	.route("/:id")
-	.get(getApplicationById)
-	.put(updateApplication)
-	.delete(deleteApplication);
+	.get(authToken, getApplicationById)
+	.put(authToken, updateApplication)
+	.delete(authToken, deleteApplication);
 
 // TODO: may be a better way to route this but idk how
-router.route("/:id/messages").get(getMessages).post(sendMessage);
+router.route("/:id/messages").get(authToken, getMessages).post(authToken, sendMessage);
 
 module.exports = router;

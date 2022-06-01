@@ -1,4 +1,5 @@
 import React from "react";
+import Cookies from 'js-cookie';
 
 const defaultContext = {
   _id: null,
@@ -7,6 +8,7 @@ const defaultContext = {
   picture: null,
   setUser: () => null,
   type: "student",
+  token: Cookies.get("auth_token"),
   interests: [],
   department: null,
   major: null,

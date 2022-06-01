@@ -67,6 +67,7 @@ Overall System Diagram
 Install Node Package Manager (npm). [Helpful Documentation](https://www.npmjs.com/get-npm)  
 ### Backend
 - google-auth-library   
+- cookie-parser
 
 ### Frontend   
 - react-google-login
@@ -74,4 +75,5 @@ Install Node Package Manager (npm). [Helpful Documentation](https://www.npmjs.co
 - motion
 - axios
 - tabler icons
+- js-cookies
 
