@@ -7,11 +7,9 @@ const getJobs = asyncHandler(async (req, res) => {
 });
 
 const getJob = asyncHandler(async (req, res) => {
-	console.log("calling getjob");
 	// find all documents with the given author's user id
 	Job.find({ "author.userId" : req.params.id }, (err, jobs) => {
 		if (err) res.status(400).send("No jobs found for author.");
-		console.log(jobs);
 		res.status(200).json(jobs);
 	});
 });

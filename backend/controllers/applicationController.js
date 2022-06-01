@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Application = require("../models/applicationModel");
 const Message = require("../models/messageModel");
+const Job = require("../models/jobModel");
 
 const getApplications = asyncHandler(async (req, res) => {
 	const jobId = req.query.jobId;
@@ -14,6 +15,13 @@ const getApplicationById = asyncHandler(async (req, res) => {
 		.then((app) => {
 			res.json(app);
 		});
+});
+
+const getApplicationByJobId = asyncHandler( (req, res) => {
+	 Application.find({"job": req.params.job_id}, (err,apps)=>{
+		if(err) return res.status(400).send("No apps founds.");
+		res.json(apps);
+	});
 });
 
 
@@ -34,6 +42,11 @@ const setApplication = asyncHandler(async (req, res) => {
 		job: req.body.job, // job ref
 		status: req.body.status,
 		messages: [],
+	}, (err,app)=>{
+		if(err || !app || !app.job) return res.status(400).send("Could not add app.");
+			Job.findOneAndUpdate({_id: app.job}, {$push: {'applications': app._id}}, (err,job)=>{
+			if(err || !job) return res.status(400).send("Could not find job.");
+		})
 	});
 	res.status(200).json(apps);
 });
@@ -72,6 +85,7 @@ const sendMessage = asyncHandler(async (req, res) => {
 module.exports = {
 	getApplications,
 	getApplicationById,
+	getApplicationByJobId,
 	setApplication,
 	updateApplication,
 	deleteApplication,
