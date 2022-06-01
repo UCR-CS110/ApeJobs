@@ -9,7 +9,9 @@ import { Register } from "./pages/Register/Register";
 import { Application } from "./pages/Application/Application";
 import { UserContextProvider } from "./contexts/UserContext/UserContext";
 import { NavBar } from "./components/NavBar/NavBar";
-import {CaseStatus} from "./pages/CaseStatus/CaseStatus"
+import { CaseStatus } from "./pages/CaseStatus/CaseStatus";
+import { JobListing } from "./pages/JobListing/JobListing";
+import { ProfRoute } from "./routes/ProfRoute/ProfRoute";
 import "./App.css";
 
 const routes = [
@@ -17,8 +19,15 @@ const routes = [
   { title: "", element: <StudentRoute element={<Home />} /> },
   { title: "signin", element: <SignIn /> },
   { title: "register", element: <Register /> },
-  { title: "/listing/:id/apply", element: <Application /> },
-  { title: "/profile/applications/:id", element: <CaseStatus/>}
+  {
+    title: "/profile/applications/:id",
+    element: <PrivateRoute element={<CaseStatus />} />,
+  },
+  {
+    title: "/listing/:id/apply",
+    element: <StudentRoute element={<Application />} />,
+  },
+  { title: "/listing/:id", element: <ProfRoute element={<JobListing />} /> },
 ];
 
 export const App = () => {
@@ -32,7 +41,8 @@ export const App = () => {
               return (
                 <Route
                   key={page.title}
-                  exact path={"/" + page.title}
+                  exact
+                  path={"/" + page.title}
                   element={page.element}
                 />
               );

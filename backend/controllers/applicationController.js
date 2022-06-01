@@ -1,31 +1,30 @@
 const asyncHandler = require("express-async-handler");
 const Application = require("../models/applicationModel");
 const Message = require("../models/messageModel");
+const Job = require("../models/jobModel");
+const User = require("../models/userModel");
 
 const getApplications = asyncHandler(async (req, res) => {
   const jobId = req.query.jobId;
-const userId = req.query.userId;
-	let apps;
-	if (jobId) {
-		apps = await Application.find({ job: jobId });
-	} else if (userId) {
-		apps = await Application.find({ "user.userId": userId })
-    .populate({path: "job"})
-	} else {
-		apps = await Application.find();
-	}
+  const apps = jobId
+    ? await Application.find({ job: jobId }).exec()
+    : await Application.find();
   res.status(200).json(apps);
 });
 
 const getApplicationById = asyncHandler(async (req, res) => {
   await Application.findOne({ _id: req.params.id })
-    .populate({ path: "messages"})
-	.populate({path:"job"})
-	.populate({path: "user.userId"})
-	.exec()
+    .lean()
     .then((app) => {
       res.json(app);
     });
+});
+
+const getApplicationByJobId = asyncHandler((req, res) => {
+  Application.find({ job: req.params.job_id }, (err, apps) => {
+    if (err) return res.status(400).send("No apps founds.");
+    res.json(apps);
+  });
 });
 
 // TODO: if an app for exists for the current user, do not let them create one
@@ -39,14 +38,34 @@ const getApplicationById = asyncHandler(async (req, res) => {
 // 	job: ObjectId,
 // }
 const setApplication = asyncHandler(async (req, res) => {
-  const apps = await Application.create({
-    user: req.body.user, // user ref
-    optionalFields: req.body.optionalFields,
-    job: req.body.job, // job ref
-    status: req.body.status,
-    messages: [],
-  });
-  res.status(200).json(apps);
+  const apps = await Application.create(
+    {
+      user: req.body.user, // user ref
+      optionalFields: req.body.optionalFields,
+      job: req.body.job, // job ref
+      status: req.body.status,
+      messages: [],
+    },
+    (err, app) => {
+      if (err || !app || !app.job)
+        return res.status(400).send("Could not add app.");
+      Job.findOneAndUpdate(
+        { _id: app.job },
+        { $push: { applications: app._id } },
+        (err, job) => {
+          if (err || !job) return res.status(400).send("Could not find job.");
+        }
+      );
+	  User.findOneAndUpdate(
+        { _id: req.body.user.userId },
+        { $push: { applications: app._id } },
+        (err, usr) => {
+          if (err || !usr) return res.status(400).send("Could not find user.");
+        }
+      );
+	  return res.status(200).json(app);
+    }
+  );
 });
 
 const updateApplication = asyncHandler(async (req, res) => {
@@ -71,7 +90,6 @@ const sendMessage = asyncHandler(async (req, res) => {
     user: req.body.user, // user ref
     message: req.body.message,
     application: req.body.application, // app ref
-	  picture: req.body.picture,
   });
 
   await Application.findOneAndUpdate(
@@ -84,6 +102,7 @@ const sendMessage = asyncHandler(async (req, res) => {
 module.exports = {
   getApplications,
   getApplicationById,
+  getApplicationByJobId,
   setApplication,
   updateApplication,
   deleteApplication,

@@ -3,11 +3,13 @@ import React from "react";
 import { JobCard } from "../../components/Home/JobCard/JobCard";
 import { SearchBar } from "../../components/Home/SearchBar/SearchBar";
 import { backendUrl } from "../../constants/backendUrl";
+import { UserContext } from "../../contexts/UserContext/UserContext";
 import { Box } from "@mui/material";
 
 //replace job map with job card component
 //remove default jobs when backend is completed
 export const Home = () => {
+  const { _id, applications } = React.useContext(UserContext);
   const [jobs, setJobs] = React.useState([]);
   const [results, setResults] = React.useState();
 
@@ -15,12 +17,21 @@ export const Home = () => {
     axios
       .get(`${backendUrl}/api/jobs`)
       .then((res) => {
-        setJobs(res.data);
+        if (_id) {
+          setJobs(
+            res.data.filter(
+              (job) =>
+                !applications.some((app) => job.applications.includes(app))
+            )
+          );
+        } else {
+          setJobs(res.data);
+        }
       })
       .catch((e) => {
         console.log(e);
       });
-  }, []);
+  }, [_id, applications, setJobs]);
 
   return (
     <div className="homeContainer">
@@ -31,12 +42,15 @@ export const Home = () => {
           setResults(
             jobs.filter((job) => {
               e = e.toLowerCase();
+              const name = job.author.name
+                ? job.author.name.toLowerCase()
+                : job.author.toLowerCase();
               return (
                 job.title.toLowerCase().includes(e) ||
                 job.interests
                   .map((interest) => interest.toLowerCase())
                   .includes(e) ||
-                job.author.toLowerCase().includes(e) ||
+                name.includes(e) ||
                 job.description.toLowerCase().includes(e)
               );
             })

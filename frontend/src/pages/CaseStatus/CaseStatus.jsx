@@ -51,28 +51,24 @@ const Comment = ({ message, picture }) => {
 };
 
 const CommentContainer = ({ app, application }) => {
-  // const [application, setApplication] = React.useState();
+  const [messages, setMessages] = React.useState(application.messages);
   const [userMessage, setUserMessage] = React.useState("");
-  const {
-    _id,
-    picture,
-    setUser,
-  } = React.useContext(UserContext);
+  const { _id, picture, name } = React.useContext(UserContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const msg = {
-      user: _id,
+      user: { userId: _id, picture, name },
       message: userMessage,
       application: application._id,
-      picture: picture,
     };
-
+    console.log("going ot send", msg);
     axios
       .post(`${backendUrl}/api/applications/${app._id}/messages`, msg)
       .then((res) => {
         // setError();
-        //console.log(res.data);
+        console.log("sent msg", res.data);
+        setMessages((prev) => [...prev, res.data]);
       })
       .catch((e) => {
         console.log(e);
@@ -83,6 +79,23 @@ const CommentContainer = ({ app, application }) => {
 
     setUserMessage("");
   };
+
+  React.useEffect(() => {
+    axios
+      .get(`${backendUrl}/api/applications/${app._id}/messages`)
+      .then((res) => {
+        console.log("msgs", res.data);
+        setMessages(res.data);
+        // setError();
+        //console.log(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+        // setError(
+        // 	"Unable to complete your request. Please try again later."
+        // );
+      });
+  }, [app]);
 
   return (
     <>
@@ -103,8 +116,12 @@ const CommentContainer = ({ app, application }) => {
                     xs={12}
                     item
                   >
-                    {application.messages.map((message, index) => (
-                      <Comment message={message} picture={picture} />
+                    {messages.map((message, index) => (
+                      <Comment
+                        key={index}
+                        message={message}
+                        picture={message.user && message.user.picture}
+                      />
                     ))}
                   </Grid>
                   <Grid xs={9} mt={"1em"} item>
@@ -144,14 +161,14 @@ const CommentContainer = ({ app, application }) => {
 export const Question = ({ question }) => {
   return (
     <>
-    <Box my={"1em"}>
-      <Typography inline variant="body1" align="left">
-        <Box sx={{ fontWeight: "bold" }}>{question.question}</Box>
-      </Typography>
-      <Typography inline variant="body1" align="left">
-        {question.answer}
-      </Typography>
-    </Box>
+      <Box my={"1em"}>
+        <Typography inline variant="body1" align="left">
+          <Box sx={{ fontWeight: "bold" }}>{question.question}</Box>
+        </Typography>
+        <Typography inline variant="body1" align="left">
+          {question.answer}
+        </Typography>
+      </Box>
     </>
   );
 };
@@ -175,6 +192,8 @@ export const QuestionsCard = ({ job }) => {
 
 export const CaseStatus = () => {
   const [application, setApplication] = React.useState();
+  const [job, setJob] = React.useState();
+
   const location = useLocation();
   React.useEffect(() => {
     //regex to remove %20 that appears in names with an apostrophe
@@ -186,7 +205,17 @@ export const CaseStatus = () => {
       .catch((e) => {
         console.log(e);
       });
-  }, [application, setApplication]);
+
+    axios
+      .get(`${backendUrl}/api/jobs/job/${location.state.job}`)
+      .then((res) => {
+        console.log("job", res.data);
+        setJob(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, [setApplication, location]);
 
   return (
     <>
@@ -194,15 +223,17 @@ export const CaseStatus = () => {
         <Grid ml={4} mr={"4em"} mt={"1em"} item xs={4}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              {application && <JobInfo job={application.job} />}
+              {application && job && <JobInfo job={job} />}
             </Grid>
             <Grid item xs={12}>
               {application && <QuestionsCard job={application} />}
             </Grid>
           </Grid>
         </Grid>
-        <Grid  mt={"1em"} item xs={7}>
-          <CommentContainer app={location.state} application={application} />
+        <Grid mt={"1em"} item xs={7}>
+          {application && (
+            <CommentContainer app={location.state} application={application} />
+          )}
         </Grid>
       </Grid>
     </>

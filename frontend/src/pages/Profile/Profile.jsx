@@ -17,20 +17,21 @@ import { useNavigate } from "react-router-dom";
 
 import { Link } from "react-router-dom";
 
-const Item = styled(Paper)(({ theme }) => ({
+export const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  maxHeight: "100%",
+  overflowY: "auto",
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: "center",
   color: theme.palette.text.secondary,
 }));
 
-const statusList = {
+export const statusList = {
   pending: "warning",
   denied: "error",
   accepted: "success",
 };
-
 
 const ProfilePicInfo = ({ user }) => {
   const { name, major, gpa, picture, type, department, setUser } = user;
@@ -126,32 +127,37 @@ const Interests = ({ interests, about }) => {
 
 const ApplicationCard = ({ job }) => {
   const navigate = useNavigate();
-  const date = new Date(job.createdAt)
   return (
     <>
-        <Box  onClick={() => {
-                  // passing state into the next page
-                  navigate(`/profile/applications/${job._id}`, { state: job });
-                }} className="hover" sx={{ flexGrow: 1 }}>
-          <Item sx={{ marginTop: "2em" }}>
-            <Grid container direction="row">
-              <Grid item xs={5}>
-                <Typography sx={{ textAlign: "left", fontWeight: "bold" }}>
-                  {job.job.title}
-                </Typography>
-              </Grid>
-              <Grid item xs={2}>
-                <Typography sx={{ textAlign: "center", fontWeight: "bold" }}>
-                  {date.toDateString()}  
-                </Typography>
-              </Grid>
-              <Grid sx={{ textAlign: "right" }} item xs={5}>
-                <Chip label={job.status.charAt(0).toUpperCase() + job.status.slice(1)} color={statusList[job.status]} />
-              </Grid>
+      <Box
+        className="hover"
+        sx={{ flexGrow: 1 }}
+        onClick={() => {
+          // passing state into the next page
+          navigate(`/profile/applications/${job._id}`, { state: job });
+        }}
+      >
+        <Item sx={{ marginTop: "2em" }}>
+          <Grid container direction="row">
+            <Grid item xs={5}>
+              <Typography sx={{ textAlign: "left", fontWeight: "bold" }}>
+                {job.title}
+              </Typography>
             </Grid>
-          </Item>
-        </Box>
-
+            <Grid item xs={2}>
+              <Typography sx={{ textAlign: "center" }}>
+                {new Date(job.createdAt).toISOString().split("T")[0]}
+              </Typography>
+            </Grid>
+            <Grid sx={{ textAlign: "right" }} item xs={5}>
+              <Chip
+                label={job.status.charAt(0).toUpperCase() + job.status.slice(1)}
+                color={statusList[job.status]}
+              />
+            </Grid>
+          </Grid>
+        </Item>
+      </Box>
     </>
   );
 };
@@ -159,18 +165,19 @@ const ApplicationCard = ({ job }) => {
 const Applications = ({ jobs }) => {
   return (
     <>
-      <Item sx={{ marginX: "1em", overflowY: "scroll" }}>
+      <Item sx={{ marginX: "1em" }}>
         <Typography inline variant="body1" align="left">
           <Box sx={{ fontWeight: "bold" }}>Applications</Box>
         </Typography>
         <Box mt={2} sx={{ flexGrow: 1 }}>
           <Grid container direction="column">
-            {jobs?.map((job, index) => (
-              <ApplicationCard
-                key={index}
-                job={job}
-              />
-            ))}
+            {jobs.length > 0 ? (
+              jobs.map((job, index) => (
+                <ApplicationCard key={index} job={job} />
+              ))
+            ) : (
+              <p>No applications found.</p>
+            )}
           </Grid>
         </Box>
       </Item>
@@ -178,10 +185,10 @@ const Applications = ({ jobs }) => {
   );
 };
 
-const Listings = ({ type, jobs }) => {
+const Listings = ({ jobs }) => {
   return (
     <>
-      <Item sx={{ marginX: "1em", padding: "1.5em", overflowY: "scroll" }}>
+      <Item sx={{ marginX: "1em", padding: "1.5em" }}>
         <Link to="/new-job">
           <Button
             variant="contained"
@@ -211,7 +218,11 @@ const Listings = ({ type, jobs }) => {
 
 const ListingCard = ({ job }) => {
   return (
-    <Link style={{ textDecoration: "none" }} to={`/job/${job._id}`}>
+    <Link
+      to={`/listing/${job._id}`}
+      style={{ textDecoration: "none" }}
+      state={job}
+    >
       <Box className="hover" sx={{ flexGrow: 1 }}>
         <Item sx={{ marginTop: "2em" }}>
           <Grid container direction="row">
@@ -221,8 +232,8 @@ const ListingCard = ({ job }) => {
               </Typography>
             </Grid>
             <Grid item xs={2}>
-              <Typography sx={{ textAlign: "center", fontWeight: "bold" }}>
-                {job.date}
+              <Typography sx={{ textAlign: "center" }}>
+                {new Date(job.createdAt).toISOString().split("T")[0]}
               </Typography>
             </Grid>
             {job.applications && (
@@ -272,7 +283,7 @@ export const Profile = () => {
         .catch((e) => {
           console.log(e);
         });
-  }, [name, setJobs]);
+  }, [name, setJobs, _id, type]);
 
   return (
     <>
