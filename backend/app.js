@@ -7,7 +7,6 @@ const userManagement = require("./routes/userManagement.js");
 const jobRoutes = require("./routes/jobRoutes.js");
 const applicationRoutes = require("./routes/applicationRoutes");
 const cookieParser = require('cookie-parser');
-const authToken  = require("./middleware/authToken");
 
 connectDB(); 
 

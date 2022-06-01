@@ -7,6 +7,8 @@ import { Box } from "@mui/material";
 import Cookies from 'js-cookie';
 import { UserContext } from "../../contexts/UserContext/UserContext";
 
+axios.defaults.withCredentials = true;
+
 export const Home = () => {
   const { _id, setUser } = React.useContext(UserContext);
   const [jobs, setJobs] = React.useState([]);
@@ -25,13 +27,16 @@ export const Home = () => {
 
   React.useEffect(() => {
     if (!_id && Cookies.get("token")) axios
-      .get(`${backendUrl}/api/user`,)
+      .get(`${backendUrl}/api/user-management/user`,)
       .then((res) => {
         setUser(res.data);
+        console.log("got", res.data);
+
       })
       .catch((e) => {
         console.log(e);
         Cookies.remove("token");
+        console.log("sent  with error");
       });
   }, [_id, setUser]);
 

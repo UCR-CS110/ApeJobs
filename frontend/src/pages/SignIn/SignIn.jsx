@@ -6,10 +6,13 @@ import { UserContext } from "../../contexts/UserContext/UserContext";
 import { useNavigate } from "react-router-dom";
 import { backendUrl } from "../../constants/backendUrl";
 import { ReactComponent as Files } from "../../images/files.svg";
+import Cookies from "js-cookie";
 import "./Signin.css";
 
+axios.defaults.withCredentials = true;
+
 export const SignIn = () => {
-  const { setUser } = React.useContext(UserContext);
+  const { _id, setUser } = React.useContext(UserContext);
   const navigate = useNavigate();
   const [error, setError] = React.useState();
 
@@ -18,13 +21,13 @@ export const SignIn = () => {
       .get(
         `${backendUrl}/api/user-management/auth-google`,
         {
-          headers: { "Authorization": googleData.tokenId, "Content-Type": "application/json", 'Access-Control-Allow-Credentials':true},
+          headers: { "Authorization": googleData.tokenId, "Content-Type": "application/json", 'Access-Control-Allow-Credentials': true },
         },
       )
       .then((res) => {
         let url = "/";
-        console.log(res.data);
         setUser(res.data);
+        console.log(res);
         setError();
         if (!res.data._id) url = "/register";
         console.log(url);
@@ -35,6 +38,18 @@ export const SignIn = () => {
         setError(err.message);
       });
   };
+
+  React.useEffect(() => {
+    if (!_id && Cookies.get("token")) axios
+      .get(`${backendUrl}/api/user`,)
+      .then((res) => {
+        setUser(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+        Cookies.remove("token");
+      });
+  }, [_id, setUser]);
 
   return (
     <>

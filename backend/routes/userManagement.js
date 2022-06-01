@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const client = new OAuth2Client(process.env.CLIENT_ID);
 const { authToken } = require("../middleware/authToken");
 
-const generateToken = (data) => jwt.sign({ email: data }, process.env.JWT_SECRET, { expiresIn: "3 days" });
+const generateToken = (data) => jwt.sign({ data: data }, process.env.JWT_SECRET);
 
 server.get("/", (req, res) => {
   res.status(201);
@@ -24,7 +24,8 @@ server.get("/auth-google", async (req, res) => {
   },
     (err, usr) => {
       if (!usr) return res.json({ email, name, picture });
-      res.cookie("token", generateToken(email), { httpOnly: true, sameSite: 'none', secure: true });
+      res.setHeader('Access-Control-Allow-Credentials', true);
+      res.cookie("token", generateToken(email));
       return res.json(usr);
     });
 });
@@ -43,7 +44,7 @@ server.post("/register", async (req, res) => {
       (err, usr) => {
         if (err) return res.send("Error registering.");
         res.setHeader('Access-Control-Allow-Credentials', true);
-        res.cookie("token", generateToken(email), { httpOnly: true, sameSite: 'none', secure: true });
+        res.cookie("token", generateToken(email));
         res.json(usr);
       })
   });
