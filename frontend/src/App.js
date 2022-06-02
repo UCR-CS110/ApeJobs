@@ -17,7 +17,7 @@ import "./App.css";
 
 const routes = [
   { title: "profile", element: <PrivateRoute element={<Profile />} /> },
-  { title: "new-job", element: <PrivateRoute element={<JobListingForm />} /> },
+  { title: "new-job", element: <ProfRoute element={<JobListingForm />} /> },
   { title: "", element: <StudentRoute element={<Home />} /> },
   { title: "signin", element: <SignIn /> },
   { title: "register", element: <Register /> },
