@@ -14,14 +14,15 @@ export const Application = () => {
 		<>
 			<Grid
 				container
-				spacing={2}
+				rowSpacing={2}
+				columnSpacing={5}
 				justifyContent="center"
 				sx={{ marginTop: "1rem" }}
 			>
-				<Grid item xs={5} sx={{ mx: 5 }}>
+				<Grid item xs={6} >
 					<ApplicantForm job={location.state}/>
 				</Grid>
-				<Grid item xs={5} sx={{ mx: 5 }}>
+				<Grid item xs={5} >
 					{location.state && <JobInfo job={location.state} />}
 				</Grid>
 			</Grid>
