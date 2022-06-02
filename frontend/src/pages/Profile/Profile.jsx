@@ -16,6 +16,7 @@ import { backendUrl } from "../../constants/backendUrl";
 import { useNavigate } from "react-router-dom";
 
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -76,7 +77,13 @@ const ProfilePicInfo = ({ user }) => {
               </Button>{" "}
             </Typography>
           )}
-          <Button variant="contained" onClick={() => setUser({ _id: null })}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              Cookies.remove("token");
+              setUser({ _id: null, picture: null });
+            }}
+          >
             Sign Out
           </Button>
         </Box>
@@ -157,7 +164,7 @@ const ApplicationCard = ({ job }) => {
           navigate(`/profile/applications/${job._id}`, { state: job });
         }}
       >
-        <Item sx={{ marginTop: "2em" }}>
+        <Item sx={{ marginTop: "2em", boxShadow: 1}}>
           <Grid container direction="row">
             <Grid item xs={5}>
               <Typography sx={{ textAlign: "left", fontWeight: "bold" }}>

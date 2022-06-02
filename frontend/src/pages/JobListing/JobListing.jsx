@@ -61,7 +61,7 @@ export const JobListing = () => {
           </Typography>
           <Box mt={2} sx={{ flexGrow: 1 }}>
             <Grid container direction="column">
-              {apps.length > 1 ? apps.map((app, index) => (
+              {apps.length > 0 ? apps.map((app, index) => (
                 <AppCard key={index} app={app} />
               )) : <p>No applications currently found.</p>}
             </Grid>
