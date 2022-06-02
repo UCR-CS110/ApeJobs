@@ -111,8 +111,8 @@ export const ApplicantForm = ({ job }) => {
 				sx={{
 					display: "flex",
 					flexDirection: "row",
-					m: 7,
 					justifyContent: "center",
+					mt: 15,
 				}}
 			>
 				<Typography variant="h3">Submitted</Typography>
