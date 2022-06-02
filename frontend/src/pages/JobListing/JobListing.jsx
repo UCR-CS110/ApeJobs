@@ -8,7 +8,7 @@ import { Item, statusList } from "../Profile/Profile";
 
 const AppCard = ({ app }) => {
   return (
-    <Link to={`/app/${app._id}`} style={{ textDecoration: "none" }} state={app}>
+    <Link to={`/profile/applications/${app._id}`} style={{ textDecoration: "none" }} state={app}>
       <Box className="hover">
         <Item sx={{ marginTop: "2em" }}>
           <Grid container direction="row">
@@ -41,7 +41,6 @@ export const JobListing = () => {
       .get(`${backendUrl}/api/applications/job/${job._id}`)
       .then((res) => {
         setApps(res.data);
-        console.log(res.data);
       })
       .catch((e) => {
         console.log(e);

@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Application = require("../models/applicationModel");
 const Message = require("../models/messageModel");
 const User = require("../models/userModel");
+const Job = require("../models/jobModel");
 
 const getApplications = asyncHandler(async (req, res) => {
 	const jobId = req.query.jobId;
