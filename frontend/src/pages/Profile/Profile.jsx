@@ -1,58 +1,75 @@
 import React from "react";
 import { UserContext } from "../../contexts/UserContext/UserContext";
-import { styled } from '@mui/material/styles';
-import { Avatar, Box, Paper, Grid, Chip, Button, Typography } from '@mui/material'
+import { styled } from "@mui/material/styles";
+import {
+  Avatar,
+  Box,
+  Paper,
+  Grid,
+  Chip,
+  Button,
+  Typography,
+} from "@mui/material";
 import { interestsList } from "../../constants/interests";
 import axios from "axios";
 import { backendUrl } from "../../constants/backendUrl";
+import { useNavigate } from "react-router-dom";
+
 import { Link } from "react-router-dom";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+export const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  maxHeight: "100%",
+  overflowY: "auto",
   ...theme.typography.body2,
   padding: theme.spacing(1),
-  textAlign: 'center',
+  textAlign: "center",
   color: theme.palette.text.secondary,
 }));
 
-const statusList = {
-  "Pending": "warning",
-  "Denied": "error",
-  "Accepted": "success",
-}
-
-const jobsApplied = [
-  {
-    title: "CS178 Grader",
-    date: "05/19/2022",
-    status: "Pending"
-  },
-  {
-    title: "Researcher",
-    date: "05/19/2022",
-    status: "Accepted"
-  },
-  {
-    title: "CS120B Grader",
-    date: "05/19/2022",
-    status: "Denied"
-  }
-];
-
-
+export const statusList = {
+  pending: "warning",
+  denied: "error",
+  accepted: "success",
+};
 
 const ProfilePicInfo = ({ user }) => {
   const { name, major, gpa, picture, type, department, setUser } = user;
   return (
     <>
       <Item>
-        <Box sx={{ flexDirection: 'column' }} style={{ justifyContent: "center", alignItems: "center", padding: "1.5em", display: "flex" }} >
-          <Avatar sx={{ width: 100, height: 100 }} src={picture} alt="profile-img" />
+        <Box
+          sx={{ flexDirection: "column" }}
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "1.5em",
+            display: "flex",
+          }}
+        >
+          <Avatar
+            sx={{ width: 100, height: 100 }}
+            src={picture}
+            alt="profile-img"
+          />
           <p>{name}</p>
-          <p>{type === "student" ? `Major: ${major}` : `Department: ${department}`}</p>
+          <p>
+            {type === "student"
+              ? `Major: ${major}`
+              : `Department: ${department}`}
+          </p>
           {type === "student" && <p>GPA: {gpa}</p>}
-          {type === "student" && <p>Resume PDF: <Button size="small" variant="contained">download</Button> </p>}
-          <Button variant="contained" onClick={() => setUser({})}>Sign Out</Button>
+          {type === "student" && (
+            <p>
+              Resume PDF:{" "}
+              <Button size="small" variant="contained">
+                download
+              </Button>{" "}
+            </p>
+          )}
+          <Button variant="contained" onClick={() => setUser({ _id: null })}>
+            Sign Out
+          </Button>
         </Box>
       </Item>
     </>
@@ -65,26 +82,41 @@ const Interests = ({ interests, about }) => {
       <Item sx={{ marginY: "1em", padding: "1.5em" }}>
         <Box>
           <Typography inline variant="body1" align="left">
-            <Box sx={{ fontWeight: 'bold' }}>Interests:</Box>
+            <Box sx={{ fontWeight: "bold" }}>Interests:</Box>
           </Typography>
           <Box mt={2} sx={{ flexGrow: 1 }}>
             <Grid container direction="row">
-              {interests.length < 1 ? <p>No interests found.</p> : interests.map((interest, index) => <Grid item xs={4}> <Chip label={interest} key={index} color={interestsList[interest]} /></Grid>)}
+              {interests.length < 1 ? (
+                <p>No interests found.</p>
+              ) : (
+                interests.map((interest, index) => (
+                  <Grid item xs={4}>
+                    {" "}
+                    <Chip
+                      label={interest}
+                      key={index}
+                      color={interestsList[interest]}
+                    />
+                  </Grid>
+                ))
+              )}
             </Grid>
           </Box>
           <Box mt={4}>
             <Typography inline variant="body1" align="left">
-              <Box sx={{ fontWeight: 'bold' }}>About:</Box>
+              <Box sx={{ fontWeight: "bold" }}>About:</Box>
             </Typography>
             <Box
               sx={{
                 width: 1,
                 height: 300,
                 align: "left",
-                mt: 2
+                mt: 2,
               }}
             >
-              <Typography inline variant="body1" align="left">{about.length > 1 ? about : "No about found."}</Typography>
+              <Typography inline variant="body1" align="left">
+                {about.length > 1 ? about : "No about found."}
+              </Typography>
             </Box>
           </Box>
         </Box>
@@ -94,23 +126,45 @@ const Interests = ({ interests, about }) => {
 };
 
 const ApplicationCard = ({ job }) => {
+  const navigate = useNavigate();
+  const [title, setTitle] = React.useState(null);
+  React.useEffect(() => {
+    axios
+      .get(`${backendUrl}/api/jobs/?jobId=${job.job}`)
+      .then((res) => {
+        setTitle(res.data.title);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, [job]);
   return (
     <>
-      <Box className="hover" sx={{ flexGrow: 1 }}>
-        <Item sx={{ marginTop: "2em" }} >
+      <Box
+        className="hover"
+        sx={{ flexGrow: 1 }}
+        onClick={() => {
+          // passing state into the next page
+          navigate(`/profile/applications/${job._id}`, { state: job });
+        }}
+      >
+        <Item sx={{ marginTop: "2em" }}>
           <Grid container direction="row">
             <Grid item xs={5}>
               <Typography sx={{ textAlign: "left", fontWeight: "bold" }}>
-                {job.title}
+                {title ? title : "No title found."}
               </Typography>
             </Grid>
             <Grid item xs={2}>
-              <Typography sx={{ textAlign: "center", fontWeight: "bold" }}>
-                {job.date}
+              <Typography sx={{ textAlign: "center" }}>
+                {new Date(job.createdAt).toISOString().split("T")[0]}
               </Typography>
             </Grid>
             <Grid sx={{ textAlign: "right" }} item xs={5}>
-              <Chip label={job.status} color={statusList[job.status]} />
+              <Chip
+                label={job.status.charAt(0).toUpperCase() + job.status.slice(1)}
+                color={statusList[job.status]}
+              />
             </Grid>
           </Grid>
         </Item>
@@ -119,17 +173,21 @@ const ApplicationCard = ({ job }) => {
   );
 };
 
-const Applications = () => {
+const Applications = ({ jobs }) => {
   return (
     <>
-      <Item sx={{ marginX: "1em", overflowY: "scroll" }}>
+      <Item sx={{ marginX: "1em" }}>
         <Typography inline variant="body1" align="left">
-          <Box sx={{ fontWeight: 'bold' }}>Applications</Box>
+          <Box sx={{ fontWeight: "bold" }}>Applications</Box>
         </Typography>
         <Box mt={2} sx={{ flexGrow: 1 }}>
           <Grid container direction="column">
-            {jobsApplied.map((job, index) =>
-              <ApplicationCard key={index} job={job} />
+            {jobs.length > 0 ? (
+              jobs.map((job, index) => (
+                <ApplicationCard key={index} job={job} />
+              ))
+            ) : (
+              <p>No applications found.</p>
             )}
           </Grid>
         </Box>
@@ -138,18 +196,29 @@ const Applications = () => {
   );
 };
 
-const Listings = ({ type, jobs }) => {
+const Listings = ({ jobs }) => {
   return (
     <>
-      <Item sx={{ marginX: "1em", padding: "1.5em", overflowY: "scroll" }}>
-        <Link to="/new-job"><Button variant="contained" sx={{ float: "right", marginRight: "1em" }}>Create Job</Button></Link>
+      <Item sx={{ marginX: "1em", padding: "1.5em" }}>
+        <Link to="/new-job">
+          <Button
+            variant="contained"
+            sx={{ float: "right", marginRight: "1em" }}
+          >
+            Create Job
+          </Button>
+        </Link>
         <Typography inline variant="body1" align="left">
-          <Box sx={{ fontWeight: 'bold' }}>Job Listings</Box>
+          <Box sx={{ fontWeight: "bold" }}>Job Listings</Box>
         </Typography>
         <Box mt={2} sx={{ flexGrow: 1 }}>
           <Grid container direction="column">
-            {jobs.length < 1 ? <p>No jobs found.</p> : jobs.sort((a, b) => b.createdAt- a.createdAt).map((job, index) =>
-              <ListingCard key={index} job={job} />
+            {jobs.length < 1 ? (
+              <p>No jobs found.</p>
+            ) : (
+              jobs
+                .sort((a, b) => b.createdAt - a.createdAt)
+                .map((job, index) => <ListingCard key={index} job={job} />)
             )}
           </Grid>
         </Box>
@@ -160,9 +229,13 @@ const Listings = ({ type, jobs }) => {
 
 const ListingCard = ({ job }) => {
   return (
-    <Link style={{ textDecoration: "none" }} to={`/job/${job._id}`}>
+    <Link
+      to={`/listing/${job._id}`}
+      style={{ textDecoration: "none" }}
+      state={job}
+    >
       <Box className="hover" sx={{ flexGrow: 1 }}>
-        <Item sx={{ marginTop: "2em" }} >
+        <Item sx={{ marginTop: "2em" }}>
           <Grid container direction="row">
             <Grid item xs={5}>
               <Typography sx={{ textAlign: "left", fontWeight: "bold" }}>
@@ -170,13 +243,15 @@ const ListingCard = ({ job }) => {
               </Typography>
             </Grid>
             <Grid item xs={2}>
-              <Typography sx={{ textAlign: "center", fontWeight: "bold" }}>
-                {job.date}
+              <Typography sx={{ textAlign: "center" }}>
+                {new Date(job.createdAt).toISOString().split("T")[0]}
               </Typography>
             </Grid>
-            {job.applications && <Grid sx={{ textAlign: "right" }} item xs={5}>
-              <Chip label={job.applications.length} />
-            </Grid>}
+            {job.applications && (
+              <Grid sx={{ textAlign: "right" }} item xs={5}>
+                <Chip label={job.applications.length} />
+              </Grid>
+            )}
           </Grid>
         </Item>
       </Box>
@@ -184,19 +259,42 @@ const ListingCard = ({ job }) => {
   );
 };
 
-
 export const Profile = () => {
-  const { _id, name, major, gpa, picture, type, department, about, interests, setUser } = React.useContext(UserContext);
+  const {
+    _id,
+    name,
+    major,
+    gpa,
+    picture,
+    type,
+    department,
+    about,
+    interests,
+    setUser,
+  } = React.useContext(UserContext);
   const [jobs, setJobs] = React.useState([]);
 
   React.useEffect(() => {
     //regex to remove %20 that appears in names with an apostrophe
-    if (type !== "student") axios.get(`${backendUrl}/api/jobs/${_id}`).then((res) => {
-      setJobs(res.data);
-    }).catch((e) => {
-      console.log(e);
-    });
-  }, [name, setJobs]);
+    if (type !== "student")
+      axios
+        .get(`${backendUrl}/api/jobs/${_id}`)
+        .then((res) => {
+          setJobs(res.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    else if (type === "student")
+      axios
+        .get(`${backendUrl}/api/applications?userId=${_id}`)
+        .then((res) => {
+          setJobs(res.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+  }, [name, setJobs, _id, type]);
 
   return (
     <>
@@ -205,7 +303,17 @@ export const Profile = () => {
           <Grid item xs={4}>
             <Grid container direction="row" spacing={2}>
               <Grid item xs={12}>
-                <ProfilePicInfo user={{ name, picture, major, gpa, department, type, setUser }} />
+                <ProfilePicInfo
+                  user={{
+                    name,
+                    picture,
+                    major,
+                    gpa,
+                    department,
+                    type,
+                    setUser,
+                  }}
+                />
               </Grid>
               <Grid item xs={12}>
                 <Interests interests={interests} about={about} />
@@ -213,12 +321,14 @@ export const Profile = () => {
             </Grid>
           </Grid>
           <Grid item xs={8}>
-            {type === "student" ? <Applications /> : <Listings jobs={jobs} />}
+            {type === "student" ? (
+              <Applications jobs={jobs} />
+            ) : (
+              <Listings jobs={jobs} />
+            )}
           </Grid>
         </Grid>
       </Box>
     </>
   );
 };
-
-
