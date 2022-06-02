@@ -44,6 +44,7 @@ export const JobListingForm = () => {
 	const [interests, setInterests] = useState();
 	const [skills, setSkills] = useState();
 	const [isSubmitted, setIsSubmitted] = useState(false);
+	const [isFormInvalid, setIsFormInvalid] = useState(false);
 
 	const { _id: userId, name } = useContext(UserContext);
 
@@ -59,8 +60,20 @@ export const JobListingForm = () => {
 		// console.log(e.target.value);
 	};
 
-	const handleSubmit = () => {
+	const validate = () => {
+		if (position === "" || desc === "" || pay === "") {
+			setIsFormInvalid(true);
+		} else {
+			setIsFormInvalid(false);
+		}
+	};
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		if(isFormInvalid) return; 
+
 		setIsSubmitted(true);
+
 		const job = {
 			author: {
 				userId: userId,
@@ -97,7 +110,7 @@ export const JobListingForm = () => {
 				}}
 			>
 				<Typography variant="h3">Submitted</Typography>
-				<Box sx={{ ml: 1}}>
+				<Box sx={{ ml: 1 }}>
 					<CircleCheck size={60} strokeWidth={2} color={"#407abf"} />
 				</Box>
 			</Box>
@@ -116,6 +129,8 @@ export const JobListingForm = () => {
 				>
 					<Box
 						component="form"
+						autoComplete="off"
+						onSubmit={handleSubmit}
 						sx={{ display: "flex", flexDirection: "column" }}
 					>
 						<TextField
@@ -125,17 +140,17 @@ export const JobListingForm = () => {
 							label="Course"
 							variant="outlined"
 							value={course}
-							// onChange={() => dispatch({ type: 'set', payload: 1 })}
 							onChange={(e) => handleChange(e, setCourse)}
 						/>
 						<TextField
+							error={isFormInvalid}
 							sx={{ mb: 2 }}
 							label="Position"
-							variant="outlined"
 							value={position}
 							onChange={(e) => handleChange(e, setPosition)}
 						/>
 						<TextField
+							error={isFormInvalid}
 							sx={{ mb: 2 }}
 							label="Description"
 							rows={5}
@@ -144,6 +159,7 @@ export const JobListingForm = () => {
 							onChange={(e) => handleChange(e, setDesc)}
 						/>
 						<TextField
+							error={isFormInvalid}
 							sx={{ mb: 2 }}
 							label="Hourly Pay"
 							type="number"
@@ -234,15 +250,16 @@ export const JobListingForm = () => {
 								setSkills(e);
 							}}
 						/>
+						<Button
+							variant="contained"
+							size="large"
+							sx={{ mt: 3 }}
+							type="submit"
+							onClick={validate}
+						>
+							Create Listing
+						</Button>
 					</Box>
-					<Button
-						variant="contained"
-						size="large"
-						sx={{ mt: 3 }}
-						onClick={handleSubmit}
-					>
-						Create Listing
-					</Button>
 				</Paper>
 			</Container>
 		</>
