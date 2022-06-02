@@ -151,27 +151,22 @@ export const ApplicantForm = ({ job }) => {
 								<Grid container spacing={2} direction="column">
 									<Grid align="left" item xs={6}>
 										<Typography variant="h6">
-											{name}
+											Name: {name}
 										</Typography>
 									</Grid>
 									<Grid align="left" item xs={6}>
 										<Typography variant="h6">
-											{email}
+											Email: {email}
 										</Typography>
 									</Grid>
 									<Grid align="left" item xs={6}>
 										<Typography variant="h6">
-											{major}
+											Major: {major}
 										</Typography>
 									</Grid>
 									<Grid align="left" item xs={6}>
 										<Typography variant="h6">
-											{gpa}
-										</Typography>
-									</Grid>
-									<Grid align="left" item xs={6}>
-										<Typography variant="body1">
-											{about}
+											GPA: {gpa}
 										</Typography>
 									</Grid>
 								</Grid>
