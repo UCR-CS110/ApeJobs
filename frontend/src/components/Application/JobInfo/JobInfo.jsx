@@ -47,13 +47,22 @@ export const JobInfo = ({ job }) => {
 						textAlign: "left",
 						marginTop: "1em",
 						marginBottom: "1em",
-            fontWeight: "bold",
+						fontWeight: "bold",
 					}}
 				>
 					Skills:
 				</Typography>
 				{job?.skills?.length < 1 ? (
-					<p> no skills </p>
+					<Typography
+						variant="body2"
+						sx={{
+							textAlign: "left",
+							marginTop: "1em",
+							marginBottom: "1em",
+						}}
+					>
+						no skills
+					</Typography>
 				) : (
 					job?.skills?.map((skill) => (
 						<>
