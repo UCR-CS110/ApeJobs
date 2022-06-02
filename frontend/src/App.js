@@ -7,14 +7,14 @@ import { SignIn } from "./pages/SignIn/SignIn";
 import { Profile } from "./pages/Profile/Profile";
 import { Register } from "./pages/Register/Register";
 import { Application } from "./pages/Application/Application";
-import { JobListing } from "./pages/JobListing/JobListing";
+import { JobListingForm } from "./pages/JobListingForm/JobListingForm";
 import { UserContextProvider } from "./contexts/UserContext/UserContext";
 import { NavBar } from "./components/NavBar/NavBar";
 import "./App.css";
 
 const routes = [
   { title: "profile", element: <PrivateRoute element={<Profile />} /> },
-  { title: "new-job", element: <PrivateRoute element={<JobListing />} /> },
+  { title: "new-job", element: <PrivateRoute element={<JobListingForm />} /> },
   { title: "", element: <StudentRoute element={<Home />} /> },
   { title: "signin", element: <SignIn /> },
   { title: "register", element: <Register /> },
