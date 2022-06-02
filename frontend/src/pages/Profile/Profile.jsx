@@ -13,6 +13,8 @@ import {
 import { interestsList } from "../../constants/interests";
 import axios from "axios";
 import { backendUrl } from "../../constants/backendUrl";
+import { useNavigate } from "react-router-dom";
+
 import { Link } from "react-router-dom";
 
 export const Item = styled(Paper)(({ theme }) => ({
@@ -30,24 +32,6 @@ export const statusList = {
   denied: "error",
   accepted: "success",
 };
-
-const jobsApplied = [
-  {
-    title: "CS178 Grader",
-    createdAt: "05/19/2022",
-    status: "pending",
-  },
-  {
-    title: "Researcher",
-    createdAt: "05/19/2022",
-    status: "accepted",
-  },
-  {
-    title: "CS120B Grader",
-    createdAt: "05/19/2022",
-    status: "denied",
-  },
-];
 
 const ProfilePicInfo = ({ user }) => {
   const { name, major, gpa, picture, type, department, setUser } = user;
@@ -92,7 +76,7 @@ const ProfilePicInfo = ({ user }) => {
               </Button>{" "}
             </Typography>
           )}
-          <Button variant="contained" onClick={() => setUser({})}>
+          <Button variant="contained" onClick={() => setUser({ _id: null })}>
             Sign Out
           </Button>
         </Box>
@@ -151,14 +135,33 @@ const Interests = ({ interests, about }) => {
 };
 
 const ApplicationCard = ({ job }) => {
+  const navigate = useNavigate();
+  const [title, setTitle] = React.useState(null);
+  React.useEffect(() => {
+    axios
+      .get(`${backendUrl}/api/jobs/?jobId=${job.job}`)
+      .then((res) => {
+        setTitle(res.data.title);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, [job]);
   return (
     <>
-      <Box className="hover" sx={{ flexGrow: 1}}>
-        <Item sx={{ marginTop: "2em", boxShadow: 1}}>
+      <Box
+        className="hover"
+        sx={{ flexGrow: 1 }}
+        onClick={() => {
+          // passing state into the next page
+          navigate(`/profile/applications/${job._id}`, { state: job });
+        }}
+      >
+        <Item sx={{ marginTop: "2em" }}>
           <Grid container direction="row">
             <Grid item xs={5}>
               <Typography sx={{ textAlign: "left", fontWeight: "bold" }}>
-                {job.title}
+                {title ? title : "No title found."}
               </Typography>
             </Grid>
             <Grid item xs={2}>
@@ -167,7 +170,10 @@ const ApplicationCard = ({ job }) => {
               </Typography>
             </Grid>
             <Grid sx={{ textAlign: "right" }} item xs={5}>
-              <Chip label={job.status} color={statusList[job.status]} />
+              <Chip
+                label={job.status.charAt(0).toUpperCase() + job.status.slice(1)}
+                color={statusList[job.status]}
+              />
             </Grid>
           </Grid>
         </Item>
@@ -176,7 +182,7 @@ const ApplicationCard = ({ job }) => {
   );
 };
 
-const Applications = () => {
+const Applications = ({ jobs }) => {
   return (
     <>
       <Item sx={{ marginX: "1em", boxShadow: 4 }}>
@@ -185,9 +191,13 @@ const Applications = () => {
         </Typography>
         <Box mt={2} sx={{ flexGrow: 1 }}>
           <Grid container direction="column">
-            {jobsApplied.map((job, index) => (
-              <ApplicationCard key={index} job={job} />
-            ))}
+            {jobs.length > 0 ? (
+              jobs.map((job, index) => (
+                <ApplicationCard key={index} job={job} />
+              ))
+            ) : (
+              <p>No applications found.</p>
+            )}
           </Grid>
         </Box>
       </Item>
@@ -284,6 +294,15 @@ export const Profile = () => {
         .catch((e) => {
           console.log(e);
         });
+    else if (type === "student")
+      axios
+        .get(`${backendUrl}/api/applications?userId=${_id}`)
+        .then((res) => {
+          setJobs(res.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
   }, [name, setJobs, _id, type]);
 
   return (
@@ -311,7 +330,11 @@ export const Profile = () => {
             </Grid>
           </Grid>
           <Grid item xs={8}>
-            {type === "student" ? <Applications /> : <Listings jobs={jobs} />}
+            {type === "student" ? (
+              <Applications jobs={jobs} />
+            ) : (
+              <Listings jobs={jobs} />
+            )}
           </Grid>
         </Grid>
       </Box>
