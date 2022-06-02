@@ -13,17 +13,9 @@ const {
 } = require("../controllers/applicationController");
 
 // add logic in a function in controllers, export and call in routes
-<<<<<<< HEAD
-router
-	.route("/")
-	.get(getApplications)
-	.post(setApplication);
-
-=======
 
 router.route("/").get(getApplications).post(setApplication);
 router.route("/job/:job_id").get(getApplicationByJobId);
->>>>>>> bd91fb4dc19c8a148070ebe1f4614081c479634b
 router
 	.route("/:id")
 	.get(getApplicationById)
