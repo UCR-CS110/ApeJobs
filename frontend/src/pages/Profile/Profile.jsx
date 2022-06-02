@@ -215,7 +215,7 @@ const Applications = ({ jobs }) => {
 const Listings = ({ jobs }) => {
   return (
     <>
-      <Item sx={{ marginX: "1em", padding: "1.5em", boxShadow: 4 }}>
+      <Item sx={{ marginX: "1em", padding: "1.5em", boxShadow: 6 }}>
         <Link to="/new-job">
           <Button
             variant="contained"
@@ -228,7 +228,7 @@ const Listings = ({ jobs }) => {
           <Box sx={{ fontWeight: "bold" }}>Job Listings</Box>
         </Typography>
         <Box mt={2} sx={{ flexGrow: 1 }}>
-          <Grid container direction="column">
+          <Grid container direction="column" >
             {jobs.length < 1 ? (
               <p>No jobs found.</p>
             ) : (
@@ -251,7 +251,7 @@ const ListingCard = ({ job }) => {
       state={job}
     >
       <Box className="hover" sx={{ flexGrow: 1 }}>
-        <Item sx={{ marginTop: "2em", boxShadow: 1 }}>
+        <Item sx={{ marginTop: "2em", boxShadow: 6}}>
           <Grid container direction="row">
             <Grid item xs={5}>
               <Typography sx={{ textAlign: "left", fontWeight: "bold" }}>

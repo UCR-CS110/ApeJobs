@@ -8,8 +8,8 @@ import { Grid } from "@mui/material";
 //remove default jobs when backend is completed
 export const Application = () => {
 	const location = useLocation();
+	const job = location.state;
 	// console.log(location.state);
-
 	return (
 		<>
 			<Grid
@@ -19,11 +19,11 @@ export const Application = () => {
 				justifyContent="center"
 				sx={{ marginTop: "1rem" }}
 			>
-				<Grid item xs={6} >
-					<ApplicantForm job={location.state}/>
+				<Grid item xs={6}>
+					<ApplicantForm job={job} />
 				</Grid>
-				<Grid item xs={5} >
-					{location.state && <JobInfo job={location.state} />}
+				<Grid item xs={5}>
+					{job && <JobInfo job={job} />}
 				</Grid>
 			</Grid>
 		</>

@@ -187,20 +187,20 @@ export const Question = ({ question }) => {
 };
 
 export const QuestionsCard = ({ job }) => {
-	return (
-		<>
-			<Paper elevation={5}>
-				<Box sx={{ boxShadow: 4 }} p={3}>
-					<Typography inline variant="h5" align="left">
-						<Box sx={{ fontWeight: "bold" }}>Questions</Box>
-					</Typography>
-					{job.optionalFields.map((question, index) => (
-						<Question question={question} />
-					))}
-				</Box>
-			</Paper>
-		</>
-	);
+  return (
+    <>
+      <Paper elevation={5}>
+        <Box p={3}>
+          <Typography inline variant="h5" align="left">
+            <Box sx={{ fontWeight: "bold" }}>Questions</Box>
+          </Typography>
+          {job.optionalFields.map((question, index) => (
+            <Question question={question} />
+          ))}
+        </Box>
+      </Paper>
+    </>
+  );
 };
 
 export const CaseStatus = () => {
