@@ -8,7 +8,10 @@ export const JobInfo = ({ job }) => {
         <Typography variant="h5" sx={{ textAlign: "left", fontWeight: "bold" }}>
           {job.title}
         </Typography>
-        <Typography variant="h6" sx={{ textAlign: "left", marginTop: "1em" }}>
+        <Typography
+          variant="h6"
+          sx={{ textAlign: "left", marginTop: "1em", color: "primary.main" }}
+        >
           {job.author.name ? job.author.name : job.author}
         </Typography>
         {job?.majors.map((major) => (
@@ -44,7 +47,14 @@ export const JobInfo = ({ job }) => {
         >
           {job?.pay}
         </Typography>
-        <Box sx={{ display: "flex", justifyContent: "flex-end", gap: "1.5em", marginTop: "1em" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: "1.5em",
+            marginTop: "1em",
+          }}
+        >
           <Users width="25" height="25" />
           <Typography variant="body1">{job?.people}</Typography>
         </Box>

@@ -7,7 +7,7 @@ export const SearchBar = ({ onChange }) => (
     freeSolo
     id="combo-box"
     options={Object.keys(interestsList)}
-    sx={{ width: 300, margin: "auto" }}
+    sx={{ width: "60%", margin: "auto" }}
     onInputChange={(e, value) => onChange(value)}
     renderInput={(params) => (
       <TextField

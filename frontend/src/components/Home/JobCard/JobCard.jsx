@@ -10,7 +10,7 @@ export const JobCard = ({ job }) => {
   return (
     <Card
       className="hover"
-      sx={{ margin: "auto", marginTop: "2em", width: "60%", padding: "1%" }}
+      sx={{ margin: "auto", marginTop: "2em", width: "60%", padding: "1%",  boxShadow: 5}}
       onClick={() => {
         // passing state into the next page
         navigate(`/listing/${job._id}/apply`, {state: job});
@@ -19,7 +19,7 @@ export const JobCard = ({ job }) => {
       <Typography variant="h5" sx={{ textAlign: "left", fontWeight: "bold" }}>
         {job.title}
       </Typography>
-      <Typography variant="h6" sx={{ textAlign: "left", marginTop: "1em" }}>
+      <Typography variant="h6" sx={{ textAlign: "left", marginTop: "1em", color: "primary.main" }}>
         {job.author.name ? job.author.name : job.author}
       </Typography>
       <div className="interestHolder">

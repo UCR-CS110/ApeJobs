@@ -38,7 +38,7 @@ const ProfilePicInfo = ({ user }) => {
   const { name, major, gpa, picture, type, department, setUser } = user;
   return (
     <>
-      <Item>
+      <Item sx={{ boxShadow: 4 }}>
         <Box
           sx={{ flexDirection: "column" }}
           style={{
@@ -53,20 +53,29 @@ const ProfilePicInfo = ({ user }) => {
             src={picture}
             alt="profile-img"
           />
-          <p>{name}</p>
-          <p>
+          <Typography
+            variant="body1"
+            sx={{ fontWeight: "bold", marginTop: "1em", color: "primary.main" }}
+          >
+            {name}
+          </Typography>
+          <Typography variant="body1" sx={{ marginTop: "1em" }}>
             {type === "student"
               ? `Major: ${major}`
               : `Department: ${department}`}
-          </p>
-          {type === "student" && <p>GPA: {gpa}</p>}
+          </Typography>
           {type === "student" && (
-            <p>
+            <Typography variant="body1" sx={{ marginTop: "1em" }}>
+              GPA: {gpa}
+            </Typography>
+          )}
+          {type === "student" && (
+            <Typography variant="body1" sx={{ marginY: "1em" }}>
               Resume PDF:{" "}
               <Button size="small" variant="contained">
                 download
               </Button>{" "}
-            </p>
+            </Typography>
           )}
           <Button
             variant="contained"
@@ -86,7 +95,7 @@ const ProfilePicInfo = ({ user }) => {
 const Interests = ({ interests, about }) => {
   return (
     <>
-      <Item sx={{ marginY: "1em", padding: "1.5em" }}>
+      <Item sx={{ marginY: "1em", padding: "1.5em", boxShadow: 4}}>
         <Box>
           <Typography inline variant="body1" align="left">
             <Box sx={{ fontWeight: "bold" }}>Interests:</Box>
@@ -94,7 +103,7 @@ const Interests = ({ interests, about }) => {
           <Box mt={2} sx={{ flexGrow: 1 }}>
             <Grid container direction="row">
               {interests.length < 1 ? (
-                <p>No interests found.</p>
+                <Typography variant="body1">No interests found.</Typography>
               ) : (
                 interests.map((interest, index) => (
                   <Grid item xs={4}>
@@ -155,7 +164,7 @@ const ApplicationCard = ({ job }) => {
           navigate(`/profile/applications/${job._id}`, { state: job });
         }}
       >
-        <Item sx={{ marginTop: "2em" }}>
+        <Item sx={{ marginTop: "2em", boxShadow: 1}}>
           <Grid container direction="row">
             <Grid item xs={5}>
               <Typography sx={{ textAlign: "left", fontWeight: "bold" }}>
@@ -183,7 +192,7 @@ const ApplicationCard = ({ job }) => {
 const Applications = ({ jobs }) => {
   return (
     <>
-      <Item sx={{ marginX: "1em" }}>
+      <Item sx={{ marginX: "1em", boxShadow: 4 }}>
         <Typography inline variant="body1" align="left">
           <Box sx={{ fontWeight: "bold" }}>Applications</Box>
         </Typography>
@@ -206,7 +215,7 @@ const Applications = ({ jobs }) => {
 const Listings = ({ jobs }) => {
   return (
     <>
-      <Item sx={{ marginX: "1em", padding: "1.5em" }}>
+      <Item sx={{ marginX: "1em", padding: "1.5em", boxShadow: 4 }}>
         <Link to="/new-job">
           <Button
             variant="contained"
@@ -242,7 +251,7 @@ const ListingCard = ({ job }) => {
       state={job}
     >
       <Box className="hover" sx={{ flexGrow: 1 }}>
-        <Item sx={{ marginTop: "2em" }}>
+        <Item sx={{ marginTop: "2em", boxShadow: 1 }}>
           <Grid container direction="row">
             <Grid item xs={5}>
               <Typography sx={{ textAlign: "left", fontWeight: "bold" }}>

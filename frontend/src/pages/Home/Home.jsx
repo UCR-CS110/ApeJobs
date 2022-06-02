@@ -49,8 +49,7 @@ export const Home = () => {
   }, [_id, setUser]);
 
   return (
-    <div className="homeContainer">
-      <h1>Home</h1>
+    <Box sx={{marginTop: "3em"}}>
       <SearchBar
         onChange={(e) => {
           if (e.length < 1) return setResults();
@@ -77,6 +76,6 @@ export const Home = () => {
           ? results.map((job) => <JobCard job={job} />)
           : jobs.map((job) => <JobCard job={job} />)}
       </Box>
-    </div>
+    </Box>
   );
 };
