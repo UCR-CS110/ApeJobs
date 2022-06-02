@@ -80,13 +80,13 @@ export const JobListingForm = () => {
 				name: name,
 			},
 			title: `${course} ${position}`,
-			interests: interests.map((e) => e.value),
-			majors: majors.map((e) => e.value),
+			interests: interests?.map((e) => e.value),
+			majors: majors?.map((e) => e.value),
 			description: desc,
 			people: people,
-			skills: skills.map((e) => e.value),
+			skills: skills?.map((e) => e.value),
 			pay: pay,
-			questions: questions.filter((e) => e !== ""),
+			questions: questions?.filter((e) => e !== ""),
 		};
 
 		axios
