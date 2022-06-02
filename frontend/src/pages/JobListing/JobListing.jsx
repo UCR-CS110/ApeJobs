@@ -9,7 +9,7 @@ import { Item, statusList } from "../Profile/Profile";
 const AppCard = ({ app }) => {
   return (
     <Link to={`/profile/applications/${app._id}`} style={{ textDecoration: "none" }} state={app}>
-      <Box className="hover">
+      <Box className="hover" sx={{boxShadow: 6}}>
         <Item sx={{ marginTop: "2em" }}>
           <Grid container direction="row">
             <Grid item xs={5}>
@@ -54,8 +54,8 @@ export const JobListing = () => {
       justifyContent="center"
       sx={{ marginTop: "1rem" }}
     >
-      <Grid item xs={5} sx={{ mx: 5 }}>
-        <Item sx={{ marginX: "1em", padding: "1em" }}>
+      <Grid item xs={5}>
+        <Item sx={{ marginX: "1em", padding: "1em" ,boxShadow: 6}}>
           <Typography inline variant="body1" align="left">
             <Box sx={{ fontWeight: "bold" }}>Applications</Box>
           </Typography>
@@ -68,7 +68,7 @@ export const JobListing = () => {
           </Box>
         </Item>
       </Grid>
-      <Grid item xs={5} sx={{ mx: 5 }}>
+      <Grid item xs={6} sx={{ mx: 2 }}>
         {job && <JobInfo job={job} />}
         <Box
           sx={{
