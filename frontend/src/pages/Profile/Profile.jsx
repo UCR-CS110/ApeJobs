@@ -130,7 +130,7 @@ const ApplicationCard = ({ job }) => {
   const [title, setTitle] = React.useState(null);
   React.useEffect(() => {
     axios
-      .get(`${backendUrl}/api/jobs/job/${job.job}`)
+      .get(`${backendUrl}/api/jobs/?jobId=${job.job}`)
       .then((res) => {
         setTitle(res.data.title);
       })

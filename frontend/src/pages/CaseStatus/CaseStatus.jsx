@@ -205,9 +205,8 @@ export const CaseStatus = () => {
       .catch((e) => {
         console.log(e);
       });
-
     axios
-      .get(`${backendUrl}/api/jobs/job/${location.state.job}`)
+      .get(`${backendUrl}/api/jobs/?jobId=${location.state.job}`)
       .then((res) => {
         console.log("job", res.data);
         setJob(res.data);

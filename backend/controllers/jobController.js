@@ -2,13 +2,20 @@ const asyncHandler = require("express-async-handler");
 const Job = require("../models/jobModel");
 
 const getJobs = asyncHandler(async (req, res) => {
-	const jobs = await Job.find();
-	res.status(200).json(jobs);
+	if (req.query.jobId) {
+		Job.findById(req.query.jobId, (err, jobs) => {
+			if (err) res.status(400).send("No jobs found for id.");
+			res.status(200).json(jobs);
+		});
+	} else {
+		const jobs = await Job.find();
+		res.status(200).json(jobs);
+	}
 });
 
 const getJob = asyncHandler(async (req, res) => {
 	// find all documents with the given author's user id
-	Job.find({ "author.userId" : req.params.id }, (err, jobs) => {
+	Job.find({ "author.userId": req.params.id }, (err, jobs) => {
 		if (err) res.status(400).send("No jobs found for author.");
 		res.status(200).json(jobs);
 	});
@@ -39,13 +46,5 @@ const deleteJob = asyncHandler(async (req, res) => {
 });
 
 
-const getJobById = asyncHandler(async (req, res) => {
-	// find all documents with the given author's user id
-	Job.findById(req.params.id, (err, jobs) => {
-		if (err) res.status(400).send("No jobs found for author.");
-		res.status(200).json(jobs);
-	});
-});
 
-
-module.exports = { getJobs, getJob, getJobById, setJob, updateJob, deleteJob };
+module.exports = { getJobs, getJob, setJob, updateJob, deleteJob };
