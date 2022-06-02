@@ -1,6 +1,6 @@
 import CreatableSelect from "react-select/creatable";
 import axios from "axios";
-import { useReducer, useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
 	TextField,
 	Typography,
@@ -12,8 +12,9 @@ import {
 	Button,
 	FormControl,
 } from "@mui/material";
-import { majors } from "../../constants/majors";
-import { SquarePlus } from "tabler-icons-react";
+import { UserContext } from "../../contexts/UserContext/UserContext";
+import { backendUrl } from "../../constants/backendUrl";
+import { SquarePlus, CircleCheck } from "tabler-icons-react";
 
 // TODO: put somewhere else later
 const options = [
@@ -30,34 +31,79 @@ const options = [
 	{ value: "Physics", label: "Physics" },
 ];
 
-const reducer = (state, action) => {
-	switch (action.type) {
-		case "set":
-			return { count: state.count + action.payload };
-		default:
-			throw new Error();
-	}
-};
-
 export const JobListing = () => {
 	// TODO: figure out how to use this
-	// const [state, dispatch] = useReducer(reducer, initialState);
 
 	const [course, setCourse] = useState("");
 	const [position, setPosition] = useState("");
 	const [desc, setDesc] = useState("");
-	const [pay, setPay] = useState(null);
-	const [questions, setQuestions] = useState([]);
-	const [majors, setMajors] = useState([]);
-	const [interests, setInterests] = useState([]);
-	const [skills, setSkills] = useState([]);
+	const [pay, setPay] = useState(0);
+	const [people, setPeople] = useState(0);
+	const [questions, setQuestions] = useState([""]);
+	const [majors, setMajors] = useState();
+	const [interests, setInterests] = useState();
+	const [skills, setSkills] = useState();
+	const [isSubmitted, setIsSubmitted] = useState(false);
+
+	const { _id: userId, name } = useContext(UserContext);
+
+	// useEffect(() => {
+	// 	console.log(majors);
+	// 	console.log(interests);
+	// 	console.log(skills);
+	// 	// on state change for states in list
+	// }, [majors, interests, skills]);
 
 	const handleChange = (e, setState) => {
 		setState(e.target.value);
-		console.log(e.target.value);
+		// console.log(e.target.value);
 	};
 
-	const onSubmit = () => {};
+	const handleSubmit = () => {
+		setIsSubmitted(true);
+		const job = {
+			author: {
+				userId: userId,
+				name: name,
+			},
+			title: `${course} ${position}`,
+			interests: interests.map((e) => e.value),
+			majors: majors.map((e) => e.value),
+			description: desc,
+			people: people,
+			skills: skills.map((e) => e.value),
+			pay: pay,
+			questions: questions.filter((e) => e !== ""),
+		};
+
+		axios
+			.post(`${backendUrl}/api/jobs`, job)
+			.then((res) => {
+				console.log(res.data);
+			})
+			.catch((e) => {
+				console.log(e);
+			});
+	};
+
+	if (isSubmitted) {
+		return (
+			<Box
+				sx={{
+					display: "flex",
+					flexDirection: "row",
+					m: 7,
+					justifyContent: "center",
+				}}
+			>
+				<Typography variant="h3">Submitted</Typography>
+				<Box sx={{ ml: 1}}>
+					<CircleCheck size={60} strokeWidth={2} color={"#407abf"} />
+				</Box>
+			</Box>
+		);
+	}
+
 	return (
 		<>
 			<Container component="main" maxWidth="md" sx={{ mb: 4 }}>
@@ -73,6 +119,8 @@ export const JobListing = () => {
 						sx={{ display: "flex", flexDirection: "column" }}
 					>
 						<TextField
+							id="outlined-helperText"
+							helperText="If applicable"
 							sx={{ mb: 2 }}
 							label="Course"
 							variant="outlined"
@@ -100,8 +148,14 @@ export const JobListing = () => {
 							label="Hourly Pay"
 							type="number"
 							variant="outlined"
-							value={pay}
 							onChange={(e) => handleChange(e, setPay)}
+						/>
+						<TextField
+							sx={{ mb: 2 }}
+							label="Number of Applicants"
+							type="number"
+							variant="outlined"
+							onChange={(e) => handleChange(e, setPeople)}
 						/>
 
 						{/* Make so that you can add any amount of question textfields */}
@@ -109,19 +163,41 @@ export const JobListing = () => {
 							Optional Questions For Applicant
 						</Typography>
 						<Box
+							sx={{
+								display: "flex",
+								alignItems: "flex-start",
+								flexDirection: "column",
+							}}
+						>
+							{questions.map((question, i) => (
+								<TextField
+									sx={{ mb: 2 }}
+									fullWidth
+									rows={5}
+									value={questions[i]}
+									onChange={(e) => {
+										questions[i] = e.target.value;
+										setQuestions([...questions]);
+										// console.log(questions);
+									}}
+								/>
+							))}
+						</Box>
+						<Box
 							display="flex"
 							justifyContent="flex-end"
 							alignItems="flex-end"
 						>
-							<TextField
-								fullWidth
-								rows={5}
-								value={questions}
-								onChange={(e) => handleChange(e, setQuestions)}
-							/>
-							<Button variant="contained" sx={{ ml: 1 }}>
+							<Button
+								variant="contained"
+								sx={{ ml: 1 }}
+								onClick={() => {
+									setQuestions([...questions, ""]);
+									// console.log(questions);
+								}}
+							>
 								<SquarePlus
-									size={45}
+									size={30}
 									strokeWidth={1}
 									color={"white"}
 								/>
@@ -134,8 +210,9 @@ export const JobListing = () => {
 							closeMenuOnSelect={false}
 							isMulti
 							options={options}
-							// value={majors}
-							// onChange={(e) => setMajors([...majors, e])}
+							onChange={(e) => {
+								setMajors(e);
+							}}
 						/>
 						<Typography variant="h6" align="left" sx={{ m: 1 }}>
 							Interests
@@ -143,8 +220,9 @@ export const JobListing = () => {
 						<CreatableSelect
 							closeMenuOnSelect={false}
 							isMulti
-							value={interests}
-							onChange={(e) => console.log(e.target)}
+							onChange={(e) => {
+								setInterests(e);
+							}}
 						/>
 						<Typography variant="h6" align="left" sx={{ m: 1 }}>
 							Skills
@@ -152,15 +230,16 @@ export const JobListing = () => {
 						<CreatableSelect
 							closeMenuOnSelect={false}
 							isMulti
-							value={skills}
-							onChange={(e) => console.log(e)}
+							onChange={(e) => {
+								setSkills(e);
+							}}
 						/>
 					</Box>
 					<Button
 						variant="contained"
 						size="large"
 						sx={{ mt: 3 }}
-						onSubmit={onSubmit}
+						onClick={handleSubmit}
 					>
 						Create Listing
 					</Button>
