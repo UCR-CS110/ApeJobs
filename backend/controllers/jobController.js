@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Job = require("../models/jobModel");
+const Application = require("../models/applicationModel");
 
 const getJobs = asyncHandler(async (req, res) => {
 	if (req.query.jobId) {
@@ -42,9 +43,11 @@ const updateJob = asyncHandler(async (req, res) => {
 });
 
 const deleteJob = asyncHandler(async (req, res) => {
-	Job.deleteOne({_id: req.params.id}).remove((err, result)=>
-	{
-		if(err) return res.status(401).send("Error removing.");
+	Job.deleteOne({ _id: req.params.id }).remove((err, result) => {
+		if (err) return res.status(401).send("Error removing.");
+		Application.updateMany({ job: req.params.id }, {status: "denied"}, (err, result) => {
+			if (err) return res.status(401).send("Error removing.");
+		})
 		return res.status(200).send("Deleted.");
 	});
 });
