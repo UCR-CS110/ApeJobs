@@ -5,7 +5,8 @@ const { OAuth2Client } = require("google-auth-library");
 const jwt = require('jsonwebtoken');
 const client = new OAuth2Client(process.env.CLIENT_ID);
 const { authToken } = require("../middleware/authToken");
-const generateToken = (data) => jwt.sign({ data: data }, process.env.JWT_SECRET);
+
+const generateToken = (data) => jwt.sign({ email: data.email, type: data.type }, process.env.JWT_SECRET);
 
 server.get("/", (req, res) => {
   res.status(201);
@@ -24,7 +25,7 @@ server.get("/auth-google", async (req, res) => {
     (err, usr) => {
       if (!usr) return res.json({ email, name, picture });
       res.setHeader('Access-Control-Allow-Credentials', true);
-      res.cookie("token", generateToken(email));
+      res.cookie("token", generateToken({ email, type: usr.type }));
       return res.json(usr);
     });
 });

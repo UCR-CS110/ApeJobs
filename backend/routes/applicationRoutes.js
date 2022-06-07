@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { authToken } = require("../middleware/authToken");
-
+const { profToken } = require("../middleware/profToken");
 const {
   getApplications,
   getApplicationById,
@@ -19,13 +19,13 @@ router
   .route("/")
   .get(authToken, getApplications)
   .post(authToken, setApplication);
-  
+
 router.route("/job/:job_id").get(authToken, getApplicationByJobId);
 
 router
   .route("/:id")
   .get(authToken, getApplicationById)
-  .put(authToken, updateApplication)
+  .put([authToken, profToken], updateApplication)
   .delete(authToken, deleteApplication);
 
 // TODO: may be a better way to route this but idk how
