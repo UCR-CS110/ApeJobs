@@ -1,25 +1,31 @@
-# CS178A-B-Template
+# ApeJobs
 
 ## Table of Contents
 - [Overview](#overview)
 - [Usage](#usage)
 - [How To Run](#how-to-run)
-- [Diagrams](#diagrams)
 - [Dependencies](#dependencies)
 
 ## Overview
-<Include project description?
+ApeJobs is a job application platform for UCR students and professors Professors can list jobs relating to their courses or interests, such as research, TA, and grader positions. Students are able to apply for these jobs with one central profile connected to their UCR Google accounts.
 
 ## Team
-<a href="https://github.com/msalloum" target="_blank"><img src="https://avatars3.githubusercontent.com/u/1790819?s=400&v=4" align="left" height="30px">Mariam Salloum </a>
-
+<a href="https://github.com/Alexk21323">Alex Kuang </a>   
+<a href="https://github.com/Moltenfuzzy">Kent Phan </a>   
+<a href="https://github.com/Park-Ryan">Ryan Park  </a>   
+<a href="https://github.com/gobrien06">Gabrielle O'Brien  </a>   
 ## Usage
-Demo: <Link to youtube video>
+Professor Profile/Home Page   
 
-<Screenshot of application>
+Professor Create Listing Page   
+Professor Listing Page   
+Professor View of Application Page   
 
 ## How To Run
 In the project directory, you can run:
+### `npm install`
+
+Installs needed packages.<br />
 
 ### `npm start`
 
@@ -44,29 +50,12 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Diagrams
-
-Sequence Diagram
-
-Frontend Structure
-
-
-Overall System Diagram   
-
 ## Dependencies   
 Install Node Package Manager (npm). [Helpful Documentation](https://www.npmjs.com/get-npm)  
 ### Backend
 - google-auth-library   
+- jsonwebtoken
+- mongoose
 - cookie-parser
 
 ### Frontend   
