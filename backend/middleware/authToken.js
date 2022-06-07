@@ -1,13 +1,14 @@
 const jwt = require('jsonwebtoken');
 
-const authToken = (req, res, next) =>{
+const authToken = (req, res, next) => {
   const token = req.cookies.token;
-
   if (!token) return res.status(400).send("Error verifying token.");
 
   jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
     if (err) return res.status(403).send("Could not process token.");
-    req.email = data;
+
+    req.email = data.email;
+    req.type = data.type;
     next()
   })
 };
