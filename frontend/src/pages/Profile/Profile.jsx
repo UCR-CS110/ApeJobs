@@ -9,12 +9,16 @@ import {
   Chip,
   Button,
   Typography,
+  Select,
+  MenuItem,
+  TextField
 } from "@mui/material";
 import { interestsList } from "../../constants/interests";
 import axios from "axios";
 import { backendUrl } from "../../constants/backendUrl";
 import { useNavigate } from "react-router-dom";
-
+import { majors } from "../../constants/majors";
+import { departments } from "../../constants/departments";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 
@@ -34,8 +38,9 @@ export const statusList = {
   accepted: "success",
 };
 
-const ProfilePicInfo = ({ user }) => {
+const ProfilePicInfo = ({ user, setEdit, edit }) => {
   const { name, major, gpa, picture, type, department, setUser } = user;
+
   return (
     <>
       <Item sx={{ boxShadow: 4 }}>
@@ -60,15 +65,43 @@ const ProfilePicInfo = ({ user }) => {
             {name}
           </Typography>
           <Typography variant="body1" sx={{ marginTop: "1em" }}>
-            {type === "student"
+            {!edit ? type === "student"
               ? `Major: ${major}`
-              : `Department: ${department}`}
+              : `Department: ${department}` : <Select
+                id="major-select"
+                label={type === "professor" ? "department" : "major"}
+                value={type === "professor" ? department : major}
+                onChange={() => { }}
+                sx={{ my: "1em", width: "300px" }}
+              >
+              {type === "student" ? majors.map((major, index) => (
+                <MenuItem key={index} value={major}>
+                  {major}
+                </MenuItem>
+              )) : departments.map((department, index) => (
+                <MenuItem key={index} value={department}>
+                  {department}
+                </MenuItem>
+              ))}
+            </Select>}
           </Typography>
-          {type === "student" && (
-            <Typography variant="body1" sx={{ marginTop: "1em" }}>
+          {type === "student" && !edit ? (
+            <Typography variant="body1">
               GPA: {gpa}
             </Typography>
-          )}
+          ) : type === "student" && <TextField
+            type="number"
+            label="GPA"
+            sx={{ my: "1em" }}
+            InputProps={{
+              inputMode: "numeric",
+              inputProps: {
+                max: 4.0,
+                min: 0,
+              },
+            }}
+            onChange={(e) => { }}
+          />}
           {type === "student" && (
             <Typography variant="body1" sx={{ marginY: "1em" }}>
               Resume PDF:{" "}
@@ -79,10 +112,18 @@ const ProfilePicInfo = ({ user }) => {
           )}
           <Button
             variant="contained"
+            onClick={() => setEdit(!edit)}
+            sx={{ my: "1em" }}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="contained"
             onClick={() => {
               Cookies.remove("token");
               setUser({ _id: null, picture: null });
             }}
+            sx={{ my: "1em" }}
           >
             Sign Out
           </Button>
@@ -92,14 +133,29 @@ const ProfilePicInfo = ({ user }) => {
   );
 };
 
-const Interests = ({ interests, about }) => {
+const Interests = ({ interests, about, edit }) => {
   return (
     <>
-      <Item sx={{ marginY: "1em", padding: "1.5em", boxShadow: 4}}>
+      <Item sx={{ marginY: "1em", padding: "1.5em", boxShadow: 4 }}>
         <Box>
           <Typography inline variant="body1" align="left">
             <Box sx={{ fontWeight: "bold" }}>Interests:</Box>
           </Typography>
+          {edit && <Select
+            id="interests-select"
+            label="interests"
+            value={interests}
+            onChange={(e) =>
+              interests.indexOf(e.target.value) === -1
+            }
+            sx={{ width: "90%", marginTop: "1em" }}
+          >
+            {Object.keys(interestsList).map((interest, index) => (
+              <MenuItem key={index} value={interest}>
+                {interest}
+              </MenuItem>
+            ))}
+          </Select>}
           <Box mt={2} sx={{ flexGrow: 1 }}>
             <Grid container direction="row">
               {interests.length < 1 ? (
@@ -107,7 +163,6 @@ const Interests = ({ interests, about }) => {
               ) : (
                 interests.map((interest, index) => (
                   <Grid item xs={4}>
-                    {" "}
                     <Chip
                       label={interest}
                       key={index}
@@ -122,7 +177,15 @@ const Interests = ({ interests, about }) => {
             <Typography inline variant="body1" align="left">
               <Box sx={{ fontWeight: "bold" }}>About:</Box>
             </Typography>
-            <Box
+            {edit ? <TextField
+              required
+              type="text"
+              sx={{ my: "1em", width: "100%" }}
+              multiline
+              rows={3}
+              maxRows={Infinity}
+              onChange={(e) => { }}
+            /> : <Box
               sx={{
                 width: 1,
                 height: 300,
@@ -133,7 +196,7 @@ const Interests = ({ interests, about }) => {
               <Typography inline variant="body1" align="left">
                 {about.length > 1 ? about : "No about found."}
               </Typography>
-            </Box>
+            </Box>}
           </Box>
         </Box>
       </Item>
@@ -164,7 +227,7 @@ const ApplicationCard = ({ job }) => {
           navigate(`/profile/applications/${job._id}`, { state: job });
         }}
       >
-        <Item sx={{ marginTop: "2em", boxShadow: 1}}>
+        <Item sx={{ marginTop: "2em", boxShadow: 1 }}>
           <Grid container direction="row">
             <Grid item xs={5}>
               <Typography sx={{ textAlign: "left", fontWeight: "bold" }}>
@@ -251,7 +314,7 @@ const ListingCard = ({ job }) => {
       state={job}
     >
       <Box className="hover" sx={{ flexGrow: 1 }}>
-        <Item sx={{ marginTop: "2em", boxShadow: 6}}>
+        <Item sx={{ marginTop: "2em", boxShadow: 6 }}>
           <Grid container direction="row">
             <Grid item xs={5}>
               <Typography sx={{ textAlign: "left", fontWeight: "bold" }}>
@@ -289,6 +352,7 @@ export const Profile = () => {
     setUser,
   } = React.useContext(UserContext);
   const [jobs, setJobs] = React.useState([]);
+  const [edit, setEdit] = React.useState(false);
 
   React.useEffect(() => {
     //regex to remove %20 that appears in names with an apostrophe
@@ -329,10 +393,12 @@ export const Profile = () => {
                     type,
                     setUser,
                   }}
+                  setEdit={setEdit}
+                  edit={edit}
                 />
               </Grid>
               <Grid item xs={12}>
-                <Interests interests={interests} about={about} />
+                <Interests interests={interests} about={about} edit={edit} />
               </Grid>
             </Grid>
           </Grid>
