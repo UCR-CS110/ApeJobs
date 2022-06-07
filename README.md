@@ -16,16 +16,22 @@ ApeJobs is a job application platform for UCR students and professors Professors
 <a href="https://github.com/gobrien06">Gabrielle O'Brien  </a>   
 ## Usage
 Professor Profile/Home Page   
+<img width="1423" alt="Screen Shot 2022-06-06 at 8 00 57 PM" src="https://user-images.githubusercontent.com/43893085/172287090-df9230b0-f305-4e9e-a69b-28c368060bdf.png">
 
 Professor Create Listing Page   
-Professor Listing Page   
-Professor View of Application Page   
+<img width="1423" alt="Screen Shot 2022-06-06 at 8 00 28 PM" src="https://user-images.githubusercontent.com/43893085/172287120-f7a93d53-e45e-4fa8-af6d-9f4619674ab7.png">
+
+Professor Job Listing Page   
+<img width="1423" alt="Screen Shot 2022-06-06 at 8 01 01 PM" src="https://user-images.githubusercontent.com/43893085/172287052-4fb882bd-99e6-4121-b7ea-0cbcf3f18688.png">
+
+Professor Application Page
+TBD
 
 ## How To Run
-In the project directory, you can run:
-### `npm install`
+In the project directory, you can run:   
 
-Installs needed packages.<br />
+### `npm install`
+Installs needed packages.<br />   
 
 ### `npm start`
 
