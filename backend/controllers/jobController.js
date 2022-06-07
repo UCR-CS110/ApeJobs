@@ -43,7 +43,7 @@ const updateJob = asyncHandler(async (req, res) => {
 });
 
 const deleteJob = asyncHandler(async (req, res) => {
-	Job.deleteOne({ _id: req.params.id }).remove((err, result) => {
+	Job.deleteOne({ _id: req.params.id }).then((err, result) => {
 		if (err) return res.status(401).send("Error removing.");
 		Application.updateMany({ job: req.params.id }, {status: "denied"}, (err, result) => {
 			if (err) return res.status(401).send("Error removing.");
