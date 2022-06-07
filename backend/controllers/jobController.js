@@ -42,7 +42,11 @@ const updateJob = asyncHandler(async (req, res) => {
 });
 
 const deleteJob = asyncHandler(async (req, res) => {
-	res.status(200).json({ message: `delete job ${req.params.id}` });
+	Job.deleteOne({_id: req.params.id}).remove((err, result)=>
+	{
+		if(err) return res.status(401).send("Error removing.");
+		return res.status(200).send("Deleted.");
+	});
 });
 
 
