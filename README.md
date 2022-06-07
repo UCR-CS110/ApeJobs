@@ -25,7 +25,21 @@ Professor Job Listing Page
 <img width="1423" alt="Screen Shot 2022-06-06 at 8 01 01 PM" src="https://user-images.githubusercontent.com/43893085/172287052-4fb882bd-99e6-4121-b7ea-0cbcf3f18688.png">
 
 Professor Application Page
-TBD
+![image](https://user-images.githubusercontent.com/46156230/172455696-8107e706-92dc-463f-974f-57cd39293f51.png)
+
+Student Home Page
+![image](https://user-images.githubusercontent.com/46156230/172455978-ceceafbc-49da-412a-b2f5-752f96023427.png)
+
+Student Profile Page
+![image](https://user-images.githubusercontent.com/46156230/172455995-30fd1af3-1217-4ad2-9907-f8c080a072aa.png)
+
+Student Application Page
+![image](https://user-images.githubusercontent.com/46156230/172456050-44867385-12a9-4284-90af-57a5ef2aef98.png)
+![image](https://user-images.githubusercontent.com/46156230/172456060-1ba189af-f1c8-4f48-a191-4102c3061e12.png)
+![image](https://user-images.githubusercontent.com/46156230/172456073-5975182e-5016-4c53-af8e-0cbec6d5c741.png)
+
+Student Application Status Page
+![image](https://user-images.githubusercontent.com/46156230/172456108-ca774635-ce0e-42e5-8e0b-8f2574fcfca0.png)
 
 ## How To Run
 In the project directory, you can run:   
