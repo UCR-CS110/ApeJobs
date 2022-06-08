@@ -45,6 +45,7 @@ const ProfilePicInfo = ({ user, setEdit, edit }) => {
     axios.put(`${backendUrl}/api/user-management/${_id}`, { [e.target.name]: e.target.value }).then((res) => {
       setUser(res.data);
     }).catch((e) => {
+      console.log(e);
     })
   };
 
@@ -79,7 +80,7 @@ const ProfilePicInfo = ({ user, setEdit, edit }) => {
                 label={type === "professor" ? "department" : "major"}
                 name={type === "professor" ? "department" : "major"}
                 value={type === "professor" ? department : major}
-                onChange={handleChange}
+                onBlur={handleChange}
                 sx={{ my: "1em", width: "300px" }}
               >
               {type === "student" ? majors.map((major, index) => (
@@ -109,7 +110,7 @@ const ProfilePicInfo = ({ user, setEdit, edit }) => {
                 min: 0,
               },
             }}
-            onChange={handleChange}
+            onBlur={handleChange}
           />}
           {type === "student" && (
             <Typography variant="body1" sx={{ marginY: "1em" }}>
@@ -170,7 +171,7 @@ const Interests = ({ interests, about, edit, _id, setUser }) => {
             label="interests"
             value={interests}
             name="interests"
-            onChange={
+            onBlur={
               handleChange
             }
             sx={{ width: "90%", marginTop: "1em" }}
@@ -210,7 +211,7 @@ const Interests = ({ interests, about, edit, _id, setUser }) => {
               multiline
               rows={3}
               maxRows={Infinity}
-              onChange={handleChange}
+              onBlur={handleChange}
             /> : <Box
               sx={{
                 width: 1,
