@@ -39,7 +39,14 @@ export const statusList = {
 };
 
 const ProfilePicInfo = ({ user, setEdit, edit }) => {
-  const { name, major, gpa, picture, type, department, setUser } = user;
+  const { name, _id, major, gpa, picture, type, department, setUser } = user;
+
+  const handleChange = (e) => {
+    axios.put(`${backendUrl}/api/user-management/${_id}`, { [e.target.name]: e.target.value }).then((res) => {
+      setUser(res.data);
+    }).catch((e) => {
+    })
+  };
 
   return (
     <>
@@ -70,8 +77,9 @@ const ProfilePicInfo = ({ user, setEdit, edit }) => {
               : `Department: ${department}` : <Select
                 id="major-select"
                 label={type === "professor" ? "department" : "major"}
+                name={type === "professor" ? "department" : "major"}
                 value={type === "professor" ? department : major}
-                onChange={() => { }}
+                onChange={handleChange}
                 sx={{ my: "1em", width: "300px" }}
               >
               {type === "student" ? majors.map((major, index) => (
@@ -91,7 +99,8 @@ const ProfilePicInfo = ({ user, setEdit, edit }) => {
             </Typography>
           ) : type === "student" && <TextField
             type="number"
-            label="GPA"
+            label="gpa"
+            name="gpa"
             sx={{ my: "1em" }}
             InputProps={{
               inputMode: "numeric",
@@ -100,7 +109,7 @@ const ProfilePicInfo = ({ user, setEdit, edit }) => {
                 min: 0,
               },
             }}
-            onChange={(e) => { }}
+            onChange={handleChange}
           />}
           {type === "student" && (
             <Typography variant="body1" sx={{ marginY: "1em" }}>
@@ -133,7 +142,22 @@ const ProfilePicInfo = ({ user, setEdit, edit }) => {
   );
 };
 
-const Interests = ({ interests, about, edit }) => {
+const Interests = ({ interests, about, edit, _id, setUser }) => {
+  const [int, setInt] = React.useState(interests);
+
+  const handleChange = (e) => {
+    axios.put(`${backendUrl}/api/user-management/${_id}`, e.target.name !== "interests" ? {
+      [e.target.name]: e.target.value
+    } : {
+      [e.target.name]: [...int, e.target.value]
+    }).then((res) => {
+      setInt(res.data.interests);
+      setUser(res.data);
+    }).catch((e) => {
+      console.log(e);
+    })
+  };
+
   return (
     <>
       <Item sx={{ marginY: "1em", padding: "1.5em", boxShadow: 4 }}>
@@ -145,8 +169,9 @@ const Interests = ({ interests, about, edit }) => {
             id="interests-select"
             label="interests"
             value={interests}
-            onChange={(e) =>
-              interests.indexOf(e.target.value) === -1
+            name="interests"
+            onChange={
+              handleChange
             }
             sx={{ width: "90%", marginTop: "1em" }}
           >
@@ -158,10 +183,10 @@ const Interests = ({ interests, about, edit }) => {
           </Select>}
           <Box mt={2} sx={{ flexGrow: 1 }}>
             <Grid container direction="row">
-              {interests.length < 1 ? (
+              {int.length < 1 ? (
                 <Typography variant="body1">No interests found.</Typography>
               ) : (
-                interests.map((interest, index) => (
+                int.map((interest, index) => (
                   <Grid item xs={4}>
                     <Chip
                       label={interest}
@@ -180,11 +205,12 @@ const Interests = ({ interests, about, edit }) => {
             {edit ? <TextField
               required
               type="text"
+              name="about"
               sx={{ my: "1em", width: "100%" }}
               multiline
               rows={3}
               maxRows={Infinity}
-              onChange={(e) => { }}
+              onChange={handleChange}
             /> : <Box
               sx={{
                 width: 1,
@@ -392,13 +418,14 @@ export const Profile = () => {
                     department,
                     type,
                     setUser,
+                    _id,
                   }}
                   setEdit={setEdit}
                   edit={edit}
                 />
               </Grid>
               <Grid item xs={12}>
-                <Interests interests={interests} about={about} edit={edit} />
+                <Interests interests={interests} about={about} edit={edit} id={_id} />
               </Grid>
             </Grid>
           </Grid>
