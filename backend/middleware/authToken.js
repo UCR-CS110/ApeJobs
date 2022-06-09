@@ -6,7 +6,6 @@ const authToken = (req, res, next) => {
 
   jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
     if (err) return res.status(403).send("Could not process token.");
-
     req.email = data.email;
     req.type = data.type;
     next()

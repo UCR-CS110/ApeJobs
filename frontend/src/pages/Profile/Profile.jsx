@@ -11,7 +11,7 @@ import {
   Typography,
   Select,
   MenuItem,
-  TextField
+  TextField,
 } from "@mui/material";
 import { interestsList } from "../../constants/interests";
 import axios from "axios";
@@ -40,13 +40,21 @@ export const statusList = {
 
 const ProfilePicInfo = ({ user, setEdit, edit }) => {
   const { name, _id, major, gpa, picture, type, department, setUser } = user;
+  const [int, setInt] = React.useState(
+    type === "professor" ? department : major
+  );
 
   const handleChange = (e) => {
-    axios.put(`${backendUrl}/api/user-management/${_id}`, { [e.target.name]: e.target.value }).then((res) => {
-      setUser(res.data);
-    }).catch((e) => {
-      console.log(e);
-    })
+    axios
+      .put(`${backendUrl}/api/user-management/${_id}`, {
+        [e.target.name]: e.target.value,
+      })
+      .then((res) => {
+        setUser(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   return (
@@ -73,45 +81,56 @@ const ProfilePicInfo = ({ user, setEdit, edit }) => {
             {name}
           </Typography>
           <Typography variant="body1" sx={{ marginTop: "1em" }}>
-            {!edit ? type === "student"
-              ? `Major: ${major}`
-              : `Department: ${department}` : <Select
+            {!edit ? (
+              type === "student" ? (
+                `Major: ${major}`
+              ) : (
+                `Department: ${department}`
+              )
+            ) : (
+              <Select
                 id="major-select"
                 label={type === "professor" ? "department" : "major"}
                 name={type === "professor" ? "department" : "major"}
-                value={type === "professor" ? department : major}
+                value={int}
                 onBlur={handleChange}
+                onChange={(e) => setInt(e.target.value)}
                 sx={{ my: "1em", width: "300px" }}
               >
-              {type === "student" ? majors.map((major, index) => (
-                <MenuItem key={index} value={major}>
-                  {major}
-                </MenuItem>
-              )) : departments.map((department, index) => (
-                <MenuItem key={index} value={department}>
-                  {department}
-                </MenuItem>
-              ))}
-            </Select>}
+                {type === "student"
+                  ? majors.map((major, index) => (
+                      <MenuItem key={index} value={major}>
+                        {major}
+                      </MenuItem>
+                    ))
+                  : departments.map((department, index) => (
+                      <MenuItem key={index} value={department}>
+                        {department}
+                      </MenuItem>
+                    ))}
+              </Select>
+            )}
           </Typography>
           {type === "student" && !edit ? (
-            <Typography variant="body1">
-              GPA: {gpa}
-            </Typography>
-          ) : type === "student" && <TextField
-            type="number"
-            label="gpa"
-            name="gpa"
-            sx={{ my: "1em" }}
-            InputProps={{
-              inputMode: "numeric",
-              inputProps: {
-                max: 4.0,
-                min: 0,
-              },
-            }}
-            onBlur={handleChange}
-          />}
+            <Typography variant="body1">GPA: {gpa}</Typography>
+          ) : (
+            type === "student" && (
+              <TextField
+                type="number"
+                label="gpa"
+                name="gpa"
+                sx={{ my: "1em" }}
+                InputProps={{
+                  inputMode: "numeric",
+                  inputProps: {
+                    max: 4.0,
+                    min: 0,
+                  },
+                }}
+                onBlur={handleChange}
+              />
+            )
+          )}
           {type === "student" && (
             <Typography variant="body1" sx={{ marginY: "1em" }}>
               Resume PDF:{" "}
@@ -143,20 +162,30 @@ const ProfilePicInfo = ({ user, setEdit, edit }) => {
   );
 };
 
-const Interests = ({ interests, about, edit, _id, setUser }) => {
+const Interests = ({ interests, about, edit, id, setUser }) => {
   const [int, setInt] = React.useState(interests);
+  const [input, setInput] = React.useState();
 
   const handleChange = (e) => {
-    axios.put(`${backendUrl}/api/user-management/${_id}`, e.target.name !== "interests" ? {
-      [e.target.name]: e.target.value
-    } : {
-      [e.target.name]: [...int, e.target.value]
-    }).then((res) => {
-      setInt(res.data.interests);
-      setUser(res.data);
-    }).catch((e) => {
-      console.log(e);
-    })
+    if (e.target.name === "interests")
+      setInt([...new Set([...int, e.target.value])]);
+    axios
+      .put(
+        `${backendUrl}/api/user-management/${id}`,
+        e.target.name !== "interests"
+          ? {
+              [e.target.name]: e.target.value,
+            }
+          : {
+              [e.target.name]: [...int, e.target.value],
+            }
+      )
+      .then((res) => {
+        setUser(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   return (
@@ -166,29 +195,32 @@ const Interests = ({ interests, about, edit, _id, setUser }) => {
           <Typography inline variant="body1" align="left">
             <Box sx={{ fontWeight: "bold" }}>Interests:</Box>
           </Typography>
-          {edit && <Select
-            id="interests-select"
-            label="interests"
-            value={interests}
-            name="interests"
-            onBlur={
-              handleChange
-            }
-            sx={{ width: "90%", marginTop: "1em" }}
-          >
-            {Object.keys(interestsList).map((interest, index) => (
-              <MenuItem key={index} value={interest}>
-                {interest}
-              </MenuItem>
-            ))}
-          </Select>}
+          {edit && (
+            <Select
+              id="interests-select"
+              label="interests"
+              name="interests"
+              onChange={(e) => {
+                setInput(e.target.value);
+              }}
+              value={input}
+              onBlur={handleChange}
+              sx={{ width: "90%", marginTop: "1em" }}
+            >
+              {Object.keys(interestsList).map((interest, index) => (
+                <MenuItem key={index} value={interest}>
+                  {interest}
+                </MenuItem>
+              ))}
+            </Select>
+          )}
           <Box mt={2} sx={{ flexGrow: 1 }}>
             <Grid container direction="row">
               {int.length < 1 ? (
                 <Typography variant="body1">No interests found.</Typography>
               ) : (
                 int.map((interest, index) => (
-                  <Grid item xs={4}>
+                  <Grid item xs={4} sx={{ my: "0.5em" }}>
                     <Chip
                       label={interest}
                       key={index}
@@ -203,27 +235,32 @@ const Interests = ({ interests, about, edit, _id, setUser }) => {
             <Typography inline variant="body1" align="left">
               <Box sx={{ fontWeight: "bold" }}>About:</Box>
             </Typography>
-            {edit ? <TextField
-              required
-              type="text"
-              name="about"
-              sx={{ my: "1em", width: "100%" }}
-              multiline
-              rows={3}
-              maxRows={Infinity}
-              onBlur={handleChange}
-            /> : <Box
-              sx={{
-                width: 1,
-                height: 300,
-                align: "left",
-                mt: 2,
-              }}
-            >
-              <Typography inline variant="body1" align="left">
-                {about.length > 1 ? about : "No about found."}
-              </Typography>
-            </Box>}
+            {edit ? (
+              <TextField
+                required
+                type="text"
+                name="about"
+                sx={{ my: "1em", width: "100%" }}
+                multiline
+                rows={3}
+                defaultValue={about}
+                maxRows={Infinity}
+                onBlur={handleChange}
+              />
+            ) : (
+              <Box
+                sx={{
+                  width: 1,
+                  height: 300,
+                  align: "left",
+                  mt: 2,
+                }}
+              >
+                <Typography inline variant="body1" align="left">
+                  {about.length > 1 ? about : "No about found."}
+                </Typography>
+              </Box>
+            )}
           </Box>
         </Box>
       </Item>
@@ -318,7 +355,7 @@ const Listings = ({ jobs }) => {
           <Box sx={{ fontWeight: "bold" }}>Job Listings</Box>
         </Typography>
         <Box mt={2} sx={{ flexGrow: 1 }}>
-          <Grid container direction="column" >
+          <Grid container direction="column">
             {jobs.length < 1 ? (
               <p>No jobs found.</p>
             ) : (
@@ -426,7 +463,13 @@ export const Profile = () => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Interests interests={interests} about={about} edit={edit} id={_id} />
+                <Interests
+                  interests={interests}
+                  about={about}
+                  edit={edit}
+                  id={_id}
+                  setUser={setUser}
+                />
               </Grid>
             </Grid>
           </Grid>
