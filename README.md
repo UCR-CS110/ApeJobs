@@ -2,6 +2,7 @@
 
 ## Table of Contents
 - [Overview](#overview)
+- [Deployment](#deployment)
 - [Usage](#usage)
 - [How To Run](#how-to-run)
 - [Dependencies](#dependencies)
@@ -14,6 +15,11 @@ ApeJobs is a job application platform for UCR students and professors Professors
 <a href="https://github.com/Moltenfuzzy">Kent Phan </a>   
 <a href="https://github.com/Park-Ryan">Ryan Park  </a>   
 <a href="https://github.com/gobrien06">Gabrielle O'Brien  </a>   
+
+## Deployment
+ApeJobs is deployed with Heroku at the following url:    
+https://apejobs.herokuapp.com   
+
 ## Usage
 Professor Profile/Home Page   
 <img width="1423" alt="Screen Shot 2022-06-06 at 8 00 57 PM" src="https://user-images.githubusercontent.com/43893085/172287090-df9230b0-f305-4e9e-a69b-28c368060bdf.png">
