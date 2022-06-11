@@ -34,7 +34,7 @@ server.get("/auth-google", async (req, res) => {
 });
 
 server.get("/user", authToken, async (req, res) => {
-  User.findOne({ email: req.email.data }, (err, usr) => {
+  User.findOne({ email: req.email }, (err, usr) => {
     if (!err && usr) return res.json(usr);
   });
 });
