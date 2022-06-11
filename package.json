@@ -1,6 +1,10 @@
 {
 	"name": "apejobs",
 	"version": "1.0.0",
+  "engines": {
+    "node": "16.x",
+    "npm": "8.x"
+  },
 	"description": "- [Overview](#overview)\r - [Usage](#usage)\r - [How To Run](#how-to-run)\r - [Dependencies](#dependencies)",
 	"main": "index.js",
 	"scripts": {
